@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: katazuketta-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: katazuketta
+      POSTGRES_USER: katazuketta
+      POSTGRES_PASSWORD: katazuketta
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

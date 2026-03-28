@@ -1,0 +1,1 @@
+ALTER TABLE "users" ADD COLUMN "avatar_icon" varchar(50) DEFAULT 'bxs-user' NOT NULL;
