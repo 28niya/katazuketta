@@ -16,12 +16,13 @@ export async function createArea(
   familyId: string,
   name: string,
   iconName: string,
+  colorIndex?: number,
 ) {
   if (!name.trim()) throw new Error('エリア名を入力してください');
   if (name.length > 50) throw new Error('エリア名は50文字以内で入力してください');
 
   const existing = await getAreas(familyId);
-  const colorIndex = existing.length % AREA_COLORS.length;
+  const finalColorIndex = colorIndex ?? (existing.length % AREA_COLORS.length);
   const displayOrder = existing.length;
 
   const [area] = await db
@@ -30,7 +31,7 @@ export async function createArea(
       familyId,
       name: name.trim(),
       iconName,
-      colorIndex,
+      colorIndex: finalColorIndex,
       displayOrder,
     })
     .returning();

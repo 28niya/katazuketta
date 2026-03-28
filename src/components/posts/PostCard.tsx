@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
+import { Button, BUTTON_VARIANTS } from '@/components/ui/Button';
 import { toggleReaction } from '@/lib/actions/posts';
 import { formatRelativeTime } from '@/lib/time';
 import { AREA_COLORS } from '@/types';
@@ -81,14 +82,15 @@ export function PostCard({
       </div>
 
       {/* たすかるボタン */}
-      <button
+      <Button
+        variant={liked ? BUTTON_VARIANTS.LIKE_ACTIVE : BUTTON_VARIANTS.LIKE}
         onClick={handleButtonClick}
         disabled={isPending}
-        className={`btn-glass text-sm ${liked ? 'btn-like-active' : ''}`}
+        className="text-sm"
       >
-        <i className={`bx ${liked ? 'bxs-heart' : 'bx-heart'} text-lg`} />
+        <i className={`bx ${liked ? 'bxs-heart' : 'bx-heart'} text-lg ${liked ? 'like-icon-active' : ''}`} />
         たすかる
-      </button>
+      </Button>
     </div>
   );
 }

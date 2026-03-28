@@ -48,12 +48,18 @@ export const AVATAR_ICONS = [
 // --- エリア カラーパレット（作成順にローテーション） ---
 
 export const AREA_COLORS = [
-  { gradient: 'from-[#4facfe] to-[#00f2fe]', css: 'linear-gradient(135deg, #4facfe, #00f2fe)', bg: '#dff0fe' },     // 青
-  { gradient: 'from-[#43e97b] to-[#38f9d7]', css: 'linear-gradient(135deg, #43e97b, #38f9d7)', bg: '#d6f5e8' },     // 緑
-  { gradient: 'from-[#667eea] to-[#764ba2]', css: 'linear-gradient(135deg, #667eea, #764ba2)', bg: '#e4dff8' },     // 紫
-  { gradient: 'from-[#febf59] to-[#f6ad55]', css: 'linear-gradient(135deg, #febf59, #f6ad55)', bg: '#fff3d6' },     // オレンジ
-  { gradient: 'from-[#ff9a9e] to-[#fecfef]', css: 'linear-gradient(135deg, #ff9a9e, #fecfef)', bg: '#ffe6eb' },     // 桃
-  { gradient: 'from-[#a18cd1] to-[#fbc2eb]', css: 'linear-gradient(135deg, #a18cd1, #fbc2eb)', bg: '#ede6f6' },     // ラベンダー
+  { gradient: 'from-[#4facfe] to-[#00f2fe]', css: 'linear-gradient(135deg, #4facfe, #00f2fe)', bg: '#dff0fe',
+    activeBg: 'linear-gradient(to bottom right, rgba(79,172,254,0.15), rgba(0,242,254,0.15))', activeBorder: 'rgba(0,242,254,0.4)', activeShadow: 'rgba(0,242,254,0.2)', activeText: '#00f2fe' },     // 青
+  { gradient: 'from-[#43e97b] to-[#38f9d7]', css: 'linear-gradient(135deg, #43e97b, #38f9d7)', bg: '#d6f5e8',
+    activeBg: 'linear-gradient(to bottom right, rgba(67,233,123,0.15), rgba(56,249,215,0.15))', activeBorder: 'rgba(56,249,215,0.4)', activeShadow: 'rgba(56,249,215,0.2)', activeText: '#38b2ac' },     // 緑
+  { gradient: 'from-[#667eea] to-[#764ba2]', css: 'linear-gradient(135deg, #667eea, #764ba2)', bg: '#e4dff8',
+    activeBg: 'linear-gradient(to bottom right, rgba(102,126,234,0.15), rgba(118,75,162,0.15))', activeBorder: 'rgba(118,75,162,0.4)', activeShadow: 'rgba(118,75,162,0.2)', activeText: '#764ba2' },     // 紫
+  { gradient: 'from-[#febf59] to-[#f6ad55]', css: 'linear-gradient(135deg, #febf59, #f6ad55)', bg: '#fff3d6',
+    activeBg: 'linear-gradient(to bottom right, rgba(254,191,89,0.15), rgba(246,173,85,0.15))', activeBorder: 'rgba(246,173,85,0.4)', activeShadow: 'rgba(246,173,85,0.2)', activeText: '#f6ad55' },     // オレンジ
+  { gradient: 'from-[#ff9a9e] to-[#fecfef]', css: 'linear-gradient(135deg, #ff9a9e, #fecfef)', bg: '#ffe6eb',
+    activeBg: 'linear-gradient(to bottom right, rgba(255,154,158,0.15), rgba(254,207,239,0.15))', activeBorder: 'rgba(255,154,158,0.4)', activeShadow: 'rgba(255,154,158,0.2)', activeText: '#ed64a6' },     // 桃
+  { gradient: 'from-[#a18cd1] to-[#fbc2eb]', css: 'linear-gradient(135deg, #a18cd1, #fbc2eb)', bg: '#ede6f6',
+    activeBg: 'linear-gradient(to bottom right, rgba(161,140,209,0.15), rgba(251,194,235,0.15))', activeBorder: 'rgba(161,140,209,0.4)', activeShadow: 'rgba(161,140,209,0.2)', activeText: '#a18cd1' },     // ラベンダー
 ] as const;
 
 // --- エリア アイコンパレット ---
