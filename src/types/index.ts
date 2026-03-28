@@ -65,15 +65,25 @@ export const AREA_COLORS = [
 // --- エリア アイコンパレット ---
 
 export const AREA_ICONS = [
-  { name: 'bxs-droplet', label: '水滴' },
-  { name: 'bxs-bath', label: 'お風呂' },
   { name: 'bxs-dish', label: 'キッチン' },
+  { name: 'bxs-bath', label: 'お風呂' },
+  { name: 'bxs-brush', label: 'ブラシ' },
+  { name: 'bxs-droplet', label: '水滴' },
   { name: 'bxs-bed', label: 'ベッド' },
   { name: 'bxs-door-open', label: 'ドア' },
-  { name: 'bxs-tree', label: '木' },
   { name: 'bxs-cabinet', label: '棚' },
-  { name: 'bxs-brush', label: 'ブラシ' },
   { name: 'bxs-t-shirt', label: 'Tシャツ' },
+  { name: 'bxs-tree', label: '木' },
+  { name: 'bxs-car', label: '車' },
+  { name: 'bxs-washer', label: '洗濯機' },
+  { name: 'bxs-fridge', label: '冷蔵庫' },
+  { name: 'bxs-book-reader', label: '本棚' },
+  { name: 'bxs-cat', label: 'ペット' },
+  { name: 'bxs-sun', label: '太陽' },
+  { name: 'bxs-shopping-bag', label: 'バッグ' },
+  { name: 'bxs-broom', label: 'ほうき' },
+  { name: 'bxs-spa', label: 'スパ' },
+  { name: 'bxs-box', label: '箱' },
   { name: 'bxs-magic-wand', label: 'その他' },
 ] as const;
 
