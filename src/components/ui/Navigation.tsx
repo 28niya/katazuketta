@@ -40,8 +40,8 @@ export function Navigation() {
       <nav className="hidden md:block bg-glass backdrop-blur-glass border border-glass-border shadow-glass sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-6 flex items-center justify-between h-16">
           <div className="flex items-center gap-2 text-xl font-bold">
-            <i className="bx bxs-spray-can text-2xl gradient-icon bg-gradient-to-br from-[#4facfe] to-[#38b2ac]" />
-            かたづけ<span>ッタ</span>
+            <i className="bx bxs-spray-can text-2xl gradient-icon bg-gradient-to-br from-[#6ee7b7] to-[#f472b6]" />
+            かたづけッタ
           </div>
           <div className="flex gap-1">
             {NAV_ITEMS.map((item) => {

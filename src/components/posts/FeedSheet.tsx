@@ -187,7 +187,7 @@ export function FeedSheet({
 
             {/* エリア選択 */}
             <div>
-              <p className="text-[15px] font-bold mb-4 flex items-center gap-2 before:block before:w-1 before:h-4 before:bg-gradient-to-b before:from-[#4facfe] before:to-[#ed64a6] before:rounded-sm">
+              <p className="text-sm font-bold mb-4 flex items-center gap-2 before:block before:w-1 before:h-4 before:bg-gradient-to-b before:from-[#4facfe] before:to-[#ed64a6] before:rounded-sm">
                 どこを かたづけッタ？
               </p>
               <div className="grid grid-cols-3 gap-3">
@@ -212,10 +212,10 @@ export function FeedSheet({
                         }}
                       >
                         <i
-                          className={`bx ${area.iconName} text-[36px] gradient-icon bg-gradient-to-br ${areaColor.gradient}`}
+                          className={`bx ${area.iconName} text-2xl gradient-icon bg-gradient-to-br ${areaColor.gradient}`}
                           style={isSelected && !isEditingAreas ? { opacity: 1, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.05))' } : { opacity: 0.8 }}
                         />
-                        <span className="text-[11px]">{area.name}</span>
+                        <span className="text-xs">{area.name}</span>
                       </button>
 
                       {/* 編集モード: マイナスバッジ */}
@@ -242,15 +242,15 @@ export function FeedSheet({
                     }}
                     className="flex flex-col items-center justify-center gap-2 py-4 rounded-[24px] bg-white/40 border border-white/60 shadow-sm hover:bg-white/60 transition-all"
                   >
-                    <i className="bx bx-plus text-[32px] opacity-80" />
-                    <span className="text-[11px] font-bold">追加</span>
+                    <i className="bx bx-plus text-2xl opacity-80" />
+                    <span className="text-xs font-bold">追加</span>
                   </button>
                 )}
 
                 {/* エリア追加フォーム（グリッド内、完了の上） */}
                 {isAdding && (
                   <div className="col-span-3 bg-white/50 border border-white/80 rounded-[28px] p-5 shadow-sm backdrop-blur-md">
-                    <p className="text-[14px] font-bold mb-3 pl-1">新しい場所を追加</p>
+                    <p className="text-sm font-bold mb-3 pl-1">新しい場所を追加</p>
 
                     {addStep === 1 ? (
                       <>
@@ -259,24 +259,24 @@ export function FeedSheet({
                           onChange={(e) => setNewAreaName(e.target.value)}
                           placeholder="場所の名前（例: 子供部屋）"
                           maxLength={50}
-                          className="w-full bg-white/60 border border-white/80 focus:bg-white/90 transition-all rounded-[16px] px-4 py-3 text-[14px] outline-none placeholder:text-sub/60 mb-4"
+                          className="w-full bg-white/60 border border-white/80 focus:bg-white/90 transition-all rounded-[16px] px-4 py-3 text-sm outline-none placeholder:text-sub/60 mb-4"
                           autoFocus
                         />
                         <div className="flex gap-3 justify-end">
-                          <Button variant={BUTTON_VARIANTS.NORMAL} onClick={() => { setIsAdding(false); setNewAreaName(''); }} className="text-[14px]">
+                          <Button variant={BUTTON_VARIANTS.NORMAL} onClick={() => { setIsAdding(false); setNewAreaName(''); }} className="text-sm">
                             キャンセル
                           </Button>
-                          <Button variant={BUTTON_VARIANTS.PRIMARY} onClick={() => setAddStep(2)} disabled={!newAreaName.trim()} className="text-[14px]">
+                          <Button variant={BUTTON_VARIANTS.PRIMARY} onClick={() => setAddStep(2)} disabled={!newAreaName.trim()} className="text-sm">
                             次へ
                           </Button>
                         </div>
                       </>
                     ) : (
                       <>
-                        <p className="text-[13px] text-sub mb-3 pl-1">「{newAreaName}」のカラーとアイコン</p>
+                        <p className="text-xs text-sub mb-3 pl-1">「{newAreaName}」のカラーとアイコン</p>
 
                         {/* カラー選択（スクエア＋チェック） */}
-                        <p className="text-[13px] font-bold text-sub mb-2 pl-1">カラーを選ぶ</p>
+                        <p className="text-xs font-bold text-sub mb-2 pl-1">カラーを選ぶ</p>
                         <div className="flex gap-3 mb-4 pl-1">
                           {AREA_COLORS.map((color, i) => {
                             const isColorSelected = newAreaColorIndex === i;
@@ -306,7 +306,7 @@ export function FeedSheet({
                         </div>
 
                         {/* アイコン選択（使用済みを除外） */}
-                        <p className="text-[13px] font-bold text-sub mb-2 pl-1">アイコンを選ぶ</p>
+                        <p className="text-xs font-bold text-sub mb-2 pl-1">アイコンを選ぶ</p>
                         <div className="flex gap-2 overflow-x-auto pb-2 mb-4" style={{ scrollbarWidth: 'none' }}>
                           {(() => {
                             const usedIcons = new Set(areas.map(a => a.iconName));
@@ -324,7 +324,7 @@ export function FeedSheet({
                                       : 'border border-transparent hover:bg-white/40'
                                   }`}
                                 >
-                                  <i className={`bx ${icon.name} text-[28px] ${isIconSelected ? `gradient-icon bg-gradient-to-br ${selectedColor.gradient}` : 'text-sub opacity-70'}`} />
+                                  <i className={`bx ${icon.name} text-2xl ${isIconSelected ? `gradient-icon bg-gradient-to-br ${selectedColor.gradient}` : 'text-sub opacity-70'}`} />
                                 </button>
                               );
                             });
@@ -332,10 +332,10 @@ export function FeedSheet({
                         </div>
 
                         <div className="flex gap-3 justify-end">
-                          <Button variant={BUTTON_VARIANTS.NORMAL} onClick={() => setAddStep(1)} className="text-[14px]">
+                          <Button variant={BUTTON_VARIANTS.NORMAL} onClick={() => setAddStep(1)} className="text-sm">
                             戻る
                           </Button>
-                          <Button variant={BUTTON_VARIANTS.PRIMARY} onClick={handleAddArea} disabled={isPending} className="text-[14px]">
+                          <Button variant={BUTTON_VARIANTS.PRIMARY} onClick={handleAddArea} disabled={isPending} className="text-sm">
                             追加する
                           </Button>
                         </div>
@@ -356,8 +356,8 @@ export function FeedSheet({
                       : 'flex-col py-4 bg-white/20 border-transparent hover:bg-white/30'
                   }`}
                 >
-                  <i className={`bx ${isEditingAreas ? 'bx-check' : 'bx-pencil'} ${isEditingAreas ? 'text-[22px]' : 'text-[28px]'} text-sub`} />
-                  <span className={`font-bold text-sub ${isEditingAreas ? 'text-[13px]' : 'text-[11px]'}`}>{isEditingAreas ? '完了' : '編集'}</span>
+                  <i className={`bx ${isEditingAreas ? 'bx-check' : 'bx-pencil'} ${isEditingAreas ? 'text-xl' : 'text-2xl'} text-sub/50`} />
+                  <span className={`text-sub/50 ${isEditingAreas ? 'text-xs font-bold' : 'text-xs'}`}>{isEditingAreas ? '完了' : '場所を編集'}</span>
                 </button>
               </div>
             </div>
@@ -366,7 +366,7 @@ export function FeedSheet({
             {selectedAreaId && (
               <>
                 <div>
-                  <p className="text-[15px] font-bold mb-3 flex items-center gap-2 before:block before:w-1 before:h-4 before:bg-gradient-to-b before:from-[#4facfe] before:to-[#ed64a6] before:rounded-sm">
+                  <p className="text-sm font-bold mb-3 flex items-center gap-2 before:block before:w-1 before:h-4 before:bg-gradient-to-b before:from-[#4facfe] before:to-[#ed64a6] before:rounded-sm">
                     ひとこと
                   </p>
                   <textarea
@@ -375,9 +375,9 @@ export function FeedSheet({
                     placeholder="なくてもOK"
                     rows={4}
                     maxLength={200}
-                    className="w-full bg-white/50 border border-white/80 focus:bg-white/70 transition-all rounded-[28px] px-6 py-5 text-[15px] outline-none placeholder:text-sub/50 resize-none"
+                    className="w-full bg-white/50 border border-white/80 focus:bg-white/70 transition-all rounded-[28px] px-6 py-5 text-sm outline-none placeholder:text-sub/50 resize-none"
                   />
-                  <span className="text-[11px] text-sub mt-1 block text-right">{memo.length}/200</span>
+                  <span className="text-xs text-sub mt-1 block text-right">{memo.length}/200</span>
                 </div>
 
                 {(() => {
@@ -387,7 +387,7 @@ export function FeedSheet({
                     <button
                       onClick={handleSubmit}
                       disabled={isPending}
-                      className="flex items-center justify-center gap-2 w-full py-4 rounded-[24px] font-bold text-[16px] border transition-all duration-300 active:scale-[0.97] disabled:opacity-40 disabled:cursor-default disabled:active:scale-100 cursor-pointer backdrop-blur-sm"
+                      className="flex items-center justify-center gap-2 w-full py-4 rounded-[24px] font-bold text-base border transition-all duration-300 active:scale-[0.97] disabled:opacity-40 disabled:cursor-default disabled:active:scale-100 cursor-pointer backdrop-blur-sm"
                       style={{
                         background: 'rgba(255, 255, 255, 0.6)',
                         borderColor: 'rgba(255, 255, 255, 0.8)',
@@ -413,7 +413,7 @@ export function FeedSheet({
 
       {/* FAB: ポータルで画面に直接配置 */}
       {!showForm && mounted && createPortal(
-        <Button variant={BUTTON_VARIANTS.PRIMARY} onClick={switchToForm} className="fixed bottom-8 right-6 z-50 text-[14px]">
+        <Button variant={BUTTON_VARIANTS.PRIMARY} onClick={switchToForm} className="fixed bottom-8 right-6 z-50 text-sm">
           投稿
         </Button>,
         document.body,
