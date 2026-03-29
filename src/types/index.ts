@@ -81,7 +81,7 @@ export const AREA_ICONS = [
   { name: 'bxs-cat', label: 'ペット' },
   { name: 'bxs-sun', label: '太陽' },
   { name: 'bxs-shopping-bag', label: 'バッグ' },
-  { name: 'bxs-broom', label: 'ほうき' },
+  { name: 'bxs-home', label: 'おうち' },
   { name: 'bxs-spa', label: 'スパ' },
   { name: 'bxs-box', label: '箱' },
   { name: 'bxs-magic-wand', label: 'その他' },

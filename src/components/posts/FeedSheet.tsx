@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition, useCallback, useEffect, useRef } from 'react';
+import { useState, useTransition, useCallback, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { PostCard } from './PostCard';
@@ -69,8 +69,7 @@ export function FeedSheet({
   const [newAreaName, setNewAreaName] = useState('');
   const [newAreaIcon, setNewAreaIcon] = useState<string>(AREA_ICONS[0].name);
   const [newAreaColorIndex, setNewAreaColorIndex] = useState(0);
-  const [longPressAreaId, setLongPressAreaId] = useState<string | null>(null);
-  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [isEditingAreas, setIsEditingAreas] = useState(false);
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
 
@@ -110,24 +109,10 @@ export function FeedSheet({
     });
   };
 
-  const handleLongPressStart = (areaId: string) => {
-    longPressTimer.current = setTimeout(() => {
-      setLongPressAreaId(areaId);
-    }, 500);
-  };
-
-  const handleLongPressEnd = () => {
-    if (longPressTimer.current) {
-      clearTimeout(longPressTimer.current);
-      longPressTimer.current = null;
-    }
-  };
-
   const handleDeleteArea = (areaId: string) => {
     startTransition(async () => {
       await deleteArea(areaId);
       if (selectedAreaId === areaId) setSelectedAreaId(null);
-      setLongPressAreaId(null);
       router.refresh();
     });
   };
@@ -210,20 +195,17 @@ export function FeedSheet({
                   const isSelected = selectedAreaId === area.id;
                   const areaColor = AREA_COLORS[area.colorIndex % AREA_COLORS.length];
                   return (
-                    <div key={area.id} className="relative">
+                    <div
+                      key={area.id}
+                      className={`relative transition-all duration-200 ${isEditingAreas ? 'grayscale-[30%] opacity-80' : ''}`}
+                    >
                       <button
-                        onClick={() => { if (!longPressAreaId) setSelectedAreaId(area.id); }}
-                        onTouchStart={() => handleLongPressStart(area.id)}
-                        onTouchEnd={handleLongPressEnd}
-                        onMouseDown={() => handleLongPressStart(area.id)}
-                        onMouseUp={handleLongPressEnd}
-                        onMouseLeave={handleLongPressEnd}
-                        className="flex flex-col items-center gap-2 py-4 rounded-[24px] text-xs font-bold border transition-all duration-300 w-full"
-                        style={isSelected ? {
+                        onClick={() => { if (!isEditingAreas) setSelectedAreaId(area.id); }}
+                        className="flex flex-col items-center gap-2 py-4 rounded-[24px] text-xs font-bold border transition-colors duration-200 w-full"
+                        style={isSelected && !isEditingAreas ? {
                           background: areaColor.activeBg,
                           borderColor: areaColor.activeBorder,
                           boxShadow: `0 4px 12px ${areaColor.activeShadow}`,
-                          transform: 'scale(1.02)',
                         } : {
                           background: 'rgba(255,255,255,0.2)',
                           borderColor: 'transparent',
@@ -231,143 +213,153 @@ export function FeedSheet({
                       >
                         <i
                           className={`bx ${area.iconName} text-[36px] gradient-icon bg-gradient-to-br ${areaColor.gradient}`}
-                          style={isSelected ? { opacity: 1, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.05))', transform: 'scale(1.05)' } : { opacity: 0.8 }}
+                          style={isSelected && !isEditingAreas ? { opacity: 1, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.05))' } : { opacity: 0.8 }}
                         />
                         <span className="text-[11px]">{area.name}</span>
                       </button>
 
-                      {/* 長押し削除確認 */}
-                      {longPressAreaId === area.id && (
-                        <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-[24px] border border-white/90">
-                          <div className="flex flex-col items-center gap-2">
-                            <button
-                              onClick={() => handleDeleteArea(area.id)}
-                              className="text-[12px] font-bold text-pink-accent"
-                            >
-                              削除する
-                            </button>
-                            <button
-                              onClick={() => setLongPressAreaId(null)}
-                              className="text-[11px] text-sub"
-                            >
-                              キャンセル
-                            </button>
-                          </div>
-                        </div>
+                      {/* 編集モード: マイナスバッジ */}
+                      {isEditingAreas && (
+                        <button
+                          onClick={(e) => { e.stopPropagation(); handleDeleteArea(area.id); }}
+                          className="absolute -top-1.5 -right-1.5 w-[22px] h-[22px] rounded-full bg-white/90 text-sub shadow-[0_2px_8px_rgba(0,0,0,0.05)] border border-white flex items-center justify-center z-10 cursor-pointer active:bg-sub active:text-white transition-colors"
+                        >
+                          <i className="bx bx-minus text-base font-bold" />
+                        </button>
                       )}
                     </div>
                   );
                 })}
-                <button
-                  onClick={() => {
-                    const usedIcons = new Set(areas.map(a => a.iconName));
-                    const firstAvailable = AREA_ICONS.find(icon => !usedIcons.has(icon.name));
-                    setNewAreaIcon(firstAvailable?.name ?? AREA_ICONS[0].name);
-                    setIsAdding(true);
-                  }}
-                  className="flex flex-col items-center justify-center gap-2 py-4 rounded-[24px] bg-white/40 border border-white/60 shadow-sm hover:bg-white/60 transition-all"
-                >
-                  <i className="bx bx-plus text-[32px] opacity-80" />
-                  <span className="text-[11px] font-bold">追加</span>
-                </button>
-              </div>
 
-              {/* エリア追加フォーム（ステップ式） */}
-              {isAdding && (
-                <div className="mt-6 bg-white/50 border border-white/80 rounded-[28px] p-5 shadow-sm backdrop-blur-md">
-                  <p className="text-[14px] font-bold mb-3 pl-1">新しい場所を追加</p>
+                {/* 編集モード: 追加ボタン */}
+                {isEditingAreas && (
+                  <button
+                    onClick={() => {
+                      const usedIcons = new Set(areas.map(a => a.iconName));
+                      const firstAvailable = AREA_ICONS.find(icon => !usedIcons.has(icon.name));
+                      setNewAreaIcon(firstAvailable?.name ?? AREA_ICONS[0].name);
+                      setIsAdding(true);
+                    }}
+                    className="flex flex-col items-center justify-center gap-2 py-4 rounded-[24px] bg-white/40 border border-white/60 shadow-sm hover:bg-white/60 transition-all"
+                  >
+                    <i className="bx bx-plus text-[32px] opacity-80" />
+                    <span className="text-[11px] font-bold">追加</span>
+                  </button>
+                )}
 
-                  {addStep === 1 ? (
-                    <>
-                      <input
-                        value={newAreaName}
-                        onChange={(e) => setNewAreaName(e.target.value)}
-                        placeholder="場所の名前（例: 子供部屋）"
-                        maxLength={50}
-                        className="w-full bg-white/60 border border-white/80 focus:bg-white/90 transition-all rounded-[16px] px-4 py-3 text-[14px] outline-none placeholder:text-sub/60 mb-4"
-                        autoFocus
-                      />
-                      <div className="flex gap-3 justify-end">
-                        <Button variant={BUTTON_VARIANTS.NORMAL} onClick={() => { setIsAdding(false); setNewAreaName(''); }} className="text-[14px]">
-                          キャンセル
-                        </Button>
-                        <Button variant={BUTTON_VARIANTS.PRIMARY} onClick={() => setAddStep(2)} disabled={!newAreaName.trim()} className="text-[14px]">
-                          次へ
-                        </Button>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <p className="text-[13px] text-sub mb-3 pl-1">「{newAreaName}」のカラーとアイコン</p>
+                {/* エリア追加フォーム（グリッド内、完了の上） */}
+                {isAdding && (
+                  <div className="col-span-3 bg-white/50 border border-white/80 rounded-[28px] p-5 shadow-sm backdrop-blur-md">
+                    <p className="text-[14px] font-bold mb-3 pl-1">新しい場所を追加</p>
 
-                      {/* カラー選択（スクエア＋チェック） */}
-                      <p className="text-[13px] font-bold text-sub mb-2 pl-1">カラーを選ぶ</p>
-                      <div className="flex gap-3 mb-4 pl-1">
-                        {AREA_COLORS.map((color, i) => {
-                          const isColorSelected = newAreaColorIndex === i;
-                          return (
-                            <button
-                              key={i}
-                              onClick={() => setNewAreaColorIndex(i)}
-                              className="flex items-center justify-center w-9 h-9 rounded-xl transition-all"
-                              style={{
-                                background: color.css,
-                                opacity: isColorSelected ? 1 : 0.6,
-                                transform: isColorSelected ? 'scale(1.1)' : 'scale(0.9)',
-                                boxShadow: isColorSelected ? '0 4px 12px rgba(0,0,0,0.15)' : 'none',
-                              }}
-                            >
-                              <i
-                                className="bx bx-check text-xl text-white transition-all"
-                                style={{
-                                  opacity: isColorSelected ? 1 : 0,
-                                  transform: isColorSelected ? 'scale(1)' : 'scale(0.5)',
-                                  filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.2))',
-                                }}
-                              />
-                            </button>
-                          );
-                        })}
-                      </div>
+                    {addStep === 1 ? (
+                      <>
+                        <input
+                          value={newAreaName}
+                          onChange={(e) => setNewAreaName(e.target.value)}
+                          placeholder="場所の名前（例: 子供部屋）"
+                          maxLength={50}
+                          className="w-full bg-white/60 border border-white/80 focus:bg-white/90 transition-all rounded-[16px] px-4 py-3 text-[14px] outline-none placeholder:text-sub/60 mb-4"
+                          autoFocus
+                        />
+                        <div className="flex gap-3 justify-end">
+                          <Button variant={BUTTON_VARIANTS.NORMAL} onClick={() => { setIsAdding(false); setNewAreaName(''); }} className="text-[14px]">
+                            キャンセル
+                          </Button>
+                          <Button variant={BUTTON_VARIANTS.PRIMARY} onClick={() => setAddStep(2)} disabled={!newAreaName.trim()} className="text-[14px]">
+                            次へ
+                          </Button>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <p className="text-[13px] text-sub mb-3 pl-1">「{newAreaName}」のカラーとアイコン</p>
 
-                      {/* アイコン選択（使用済みを除外） */}
-                      <p className="text-[13px] font-bold text-sub mb-2 pl-1">アイコンを選ぶ</p>
-                      <div className="flex gap-2 overflow-x-auto pb-2 mb-4" style={{ scrollbarWidth: 'none' }}>
-                        {(() => {
-                          const usedIcons = new Set(areas.map(a => a.iconName));
-                          const availableIcons = AREA_ICONS.filter(icon => !usedIcons.has(icon.name));
-                          return (availableIcons.length > 0 ? availableIcons : AREA_ICONS).map((icon) => {
-                            const isIconSelected = newAreaIcon === icon.name;
-                            const selectedColor = AREA_COLORS[newAreaColorIndex];
+                        {/* カラー選択（スクエア＋チェック） */}
+                        <p className="text-[13px] font-bold text-sub mb-2 pl-1">カラーを選ぶ</p>
+                        <div className="flex gap-3 mb-4 pl-1">
+                          {AREA_COLORS.map((color, i) => {
+                            const isColorSelected = newAreaColorIndex === i;
                             return (
                               <button
-                                key={icon.name}
-                                onClick={() => setNewAreaIcon(icon.name)}
-                                className={`p-3 rounded-[20px] transition-all flex-shrink-0 ${
-                                  isIconSelected
-                                    ? 'bg-white/80 shadow-sm border border-white'
-                                    : 'border border-transparent hover:bg-white/40'
-                                }`}
+                                key={i}
+                                onClick={() => setNewAreaColorIndex(i)}
+                                className="flex items-center justify-center w-9 h-9 rounded-xl transition-all"
+                                style={{
+                                  background: color.css,
+                                  opacity: isColorSelected ? 1 : 0.6,
+                                  transform: isColorSelected ? 'scale(1.1)' : 'scale(0.9)',
+                                  boxShadow: isColorSelected ? '0 4px 12px rgba(0,0,0,0.15)' : 'none',
+                                }}
                               >
-                                <i className={`bx ${icon.name} text-[28px] ${isIconSelected ? `gradient-icon bg-gradient-to-br ${selectedColor.gradient}` : 'text-sub opacity-70'}`} />
+                                <i
+                                  className="bx bx-check text-xl text-white transition-all"
+                                  style={{
+                                    opacity: isColorSelected ? 1 : 0,
+                                    transform: isColorSelected ? 'scale(1)' : 'scale(0.5)',
+                                    filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.2))',
+                                  }}
+                                />
                               </button>
                             );
-                          });
-                        })()}
-                      </div>
+                          })}
+                        </div>
 
-                      <div className="flex gap-3 justify-end">
-                        <Button variant={BUTTON_VARIANTS.NORMAL} onClick={() => setAddStep(1)} className="text-[14px]">
-                          戻る
-                        </Button>
-                        <Button variant={BUTTON_VARIANTS.PRIMARY} onClick={handleAddArea} disabled={isPending} className="text-[14px]">
-                          追加する
-                        </Button>
-                      </div>
-                    </>
-                  )}
-                </div>
-              )}
+                        {/* アイコン選択（使用済みを除外） */}
+                        <p className="text-[13px] font-bold text-sub mb-2 pl-1">アイコンを選ぶ</p>
+                        <div className="flex gap-2 overflow-x-auto pb-2 mb-4" style={{ scrollbarWidth: 'none' }}>
+                          {(() => {
+                            const usedIcons = new Set(areas.map(a => a.iconName));
+                            const availableIcons = AREA_ICONS.filter(icon => !usedIcons.has(icon.name));
+                            return (availableIcons.length > 0 ? availableIcons : AREA_ICONS).map((icon) => {
+                              const isIconSelected = newAreaIcon === icon.name;
+                              const selectedColor = AREA_COLORS[newAreaColorIndex];
+                              return (
+                                <button
+                                  key={icon.name}
+                                  onClick={() => setNewAreaIcon(icon.name)}
+                                  className={`p-3 rounded-[20px] transition-all flex-shrink-0 ${
+                                    isIconSelected
+                                      ? 'bg-white/80 shadow-sm border border-white'
+                                      : 'border border-transparent hover:bg-white/40'
+                                  }`}
+                                >
+                                  <i className={`bx ${icon.name} text-[28px] ${isIconSelected ? `gradient-icon bg-gradient-to-br ${selectedColor.gradient}` : 'text-sub opacity-70'}`} />
+                                </button>
+                              );
+                            });
+                          })()}
+                        </div>
+
+                        <div className="flex gap-3 justify-end">
+                          <Button variant={BUTTON_VARIANTS.NORMAL} onClick={() => setAddStep(1)} className="text-[14px]">
+                            戻る
+                          </Button>
+                          <Button variant={BUTTON_VARIANTS.PRIMARY} onClick={handleAddArea} disabled={isPending} className="text-[14px]">
+                            追加する
+                          </Button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
+
+                {/* 編集モード切り替え（グリッド末尾） */}
+                <button
+                  onClick={() => {
+                    if (isEditingAreas) { setIsAdding(false); setNewAreaName(''); setAddStep(1); }
+                    setIsEditingAreas(!isEditingAreas);
+                  }}
+                  className={`flex items-center justify-center gap-2 rounded-[24px] border transition-all ${
+                    isEditingAreas
+                      ? 'col-span-3 py-3 bg-white/90 border-white shadow-[0_4px_12px_rgba(31,38,135,0.05)]'
+                      : 'flex-col py-4 bg-white/20 border-transparent hover:bg-white/30'
+                  }`}
+                >
+                  <i className={`bx ${isEditingAreas ? 'bx-check' : 'bx-pencil'} ${isEditingAreas ? 'text-[22px]' : 'text-[28px]'} text-sub`} />
+                  <span className={`font-bold text-sub ${isEditingAreas ? 'text-[13px]' : 'text-[11px]'}`}>{isEditingAreas ? '完了' : '編集'}</span>
+                </button>
+              </div>
             </div>
 
             {/* メモ入力 + 投稿ボタン（エリア選択後に表示） */}
