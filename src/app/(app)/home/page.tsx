@@ -1,7 +1,6 @@
-import { ExpBar } from '@/components/ui/ExpBar';
+import { LevelGauge } from '@/components/ui/LevelGauge';
 import { BottomSheet } from '@/components/ui/BottomSheet';
 import { FeedSheet } from '@/components/posts/FeedSheet';
-import { HouseScene } from '@/components/house/HouseScene';
 import { getFamilyWithLevel } from '@/lib/actions/family';
 import { getAreas } from '@/lib/actions/areas';
 import { getFeedData } from '@/lib/actions/feed';
@@ -19,23 +18,15 @@ export default async function HomePage() {
 
   return (
     <div className="md:grid md:grid-cols-2 md:gap-6 md:px-6 md:py-4">
-      {/* おうち + EXP（常に表示） */}
+      {/* レベルゲージ（常に表示） */}
       <div className="px-5 py-4 md:px-0">
-        <div className="bg-glass-light backdrop-blur-glass border border-glass-border-light rounded-3xl relative overflow-hidden h-56 md:h-72">
-          <div className="absolute top-3 left-1/2 -translate-x-1/2 w-[85%] z-10">
-            <ExpBar
-              level={family.level}
-              totalExp={family.totalExp}
-              currentThreshold={family.currentThreshold}
-              nextThreshold={family.nextThreshold}
-              progress={family.progress}
-            />
-          </div>
-          <HouseScene
-            level={family.level}
-            familyId={family.id}
-          />
-        </div>
+        <LevelGauge
+          level={family.level}
+          totalExp={family.totalExp}
+          currentThreshold={family.currentThreshold}
+          nextThreshold={family.nextThreshold}
+          progress={family.progress}
+        />
       </div>
 
       {/* モバイル: ボトムシート */}

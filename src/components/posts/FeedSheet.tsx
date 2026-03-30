@@ -65,11 +65,11 @@ export function FeedSheet({
   const [memo, setMemo] = useState('');
   const [isPending, startTransition] = useTransition();
   const [isAdding, setIsAdding] = useState(false);
-  const [addStep, setAddStep] = useState<1 | 2>(1);
   const [newAreaName, setNewAreaName] = useState('');
   const [newAreaIcon, setNewAreaIcon] = useState<string>(AREA_ICONS[0].name);
   const [newAreaColorIndex, setNewAreaColorIndex] = useState(0);
   const [isEditingAreas, setIsEditingAreas] = useState(false);
+  const [addError, setAddError] = useState('');
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
 
@@ -118,13 +118,16 @@ export function FeedSheet({
   };
 
   const handleAddArea = () => {
-    if (!newAreaName.trim()) return;
+    if (!newAreaName.trim()) {
+      setAddError('場所の名前を入れてね');
+      return;
+    }
+    setAddError('');
     startTransition(async () => {
       const area = await createArea(familyId, newAreaName, newAreaIcon, newAreaColorIndex);
       setSelectedAreaId(area.id);
       setNewAreaName('');
       setNewAreaColorIndex(0);
-      setAddStep(1);
       setIsAdding(false);
       router.refresh();
     });
@@ -190,7 +193,7 @@ export function FeedSheet({
               <p className="text-sm font-bold mb-4 flex items-center gap-2 before:block before:w-1 before:h-4 before:bg-gradient-to-b before:from-[#4facfe] before:to-[#ed64a6] before:rounded-sm">
                 どこを かたづけッタ？
               </p>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-3 gap-3 items-stretch">
                 {areas.map((area) => {
                   const isSelected = selectedAreaId === area.id;
                   const areaColor = AREA_COLORS[area.colorIndex % AREA_COLORS.length];
@@ -201,7 +204,7 @@ export function FeedSheet({
                     >
                       <button
                         onClick={() => { if (!isEditingAreas) setSelectedAreaId(area.id); }}
-                        className="flex flex-col items-center gap-2 py-4 rounded-[24px] text-xs font-bold border transition-colors duration-200 w-full"
+                        className="flex flex-col items-center justify-center gap-2 py-4 rounded-[24px] text-xs font-bold border transition-colors duration-200 w-full h-full"
                         style={isSelected && !isEditingAreas ? {
                           background: areaColor.activeBg,
                           borderColor: areaColor.activeBorder,
@@ -252,102 +255,90 @@ export function FeedSheet({
                   <div className="col-span-3 bg-white/50 border border-white/80 rounded-[28px] p-5 shadow-sm backdrop-blur-md">
                     <p className="text-sm font-bold mb-3 pl-1">新しい場所を追加</p>
 
-                    {addStep === 1 ? (
-                      <>
-                        <input
-                          value={newAreaName}
-                          onChange={(e) => setNewAreaName(e.target.value)}
-                          placeholder="場所の名前（例: 子供部屋）"
-                          maxLength={50}
-                          className="w-full bg-white/60 border border-white/80 focus:bg-white/90 transition-all rounded-[16px] px-4 py-3 text-sm outline-none placeholder:text-sub/60 mb-4"
-                          autoFocus
-                        />
-                        <div className="flex gap-3 justify-end">
-                          <Button variant={BUTTON_VARIANTS.NORMAL} onClick={() => { setIsAdding(false); setNewAreaName(''); }} className="text-sm">
-                            キャンセル
-                          </Button>
-                          <Button variant={BUTTON_VARIANTS.PRIMARY} onClick={() => setAddStep(2)} disabled={!newAreaName.trim()} className="text-sm">
-                            次へ
-                          </Button>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <p className="text-xs text-sub mb-3 pl-1">「{newAreaName}」のカラーとアイコン</p>
+                    <input
+                      value={newAreaName}
+                      onChange={(e) => { setNewAreaName(e.target.value); setAddError(''); }}
+                      placeholder="場所の名前（例: 子供部屋）"
+                      maxLength={50}
+                      className="w-full bg-white/60 border border-white/80 focus:bg-white/90 transition-all rounded-[16px] px-4 py-3 text-sm outline-none placeholder:text-sub/60 mb-4"
+                      autoFocus
+                    />
 
-                        {/* カラー選択（スクエア＋チェック） */}
-                        <p className="text-xs font-bold text-sub mb-2 pl-1">カラーを選ぶ</p>
-                        <div className="flex gap-3 mb-4 pl-1">
-                          {AREA_COLORS.map((color, i) => {
-                            const isColorSelected = newAreaColorIndex === i;
-                            return (
-                              <button
-                                key={i}
-                                onClick={() => setNewAreaColorIndex(i)}
-                                className="flex items-center justify-center w-9 h-9 rounded-xl transition-all"
-                                style={{
-                                  background: color.css,
-                                  opacity: isColorSelected ? 1 : 0.6,
-                                  transform: isColorSelected ? 'scale(1.1)' : 'scale(0.9)',
-                                  boxShadow: isColorSelected ? '0 4px 12px rgba(0,0,0,0.15)' : 'none',
-                                }}
-                              >
-                                <i
-                                  className="bx bx-check text-xl text-white transition-all"
-                                  style={{
-                                    opacity: isColorSelected ? 1 : 0,
-                                    transform: isColorSelected ? 'scale(1)' : 'scale(0.5)',
-                                    filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.2))',
-                                  }}
-                                />
-                              </button>
-                            );
-                          })}
-                        </div>
+                    {/* カラー選択（スクエア＋チェック） */}
+                    <p className="text-xs font-bold text-sub mb-2 pl-1">カラーを選ぶ</p>
+                    <div className="flex gap-3 mb-4 pl-1">
+                      {AREA_COLORS.map((color, i) => {
+                        const isColorSelected = newAreaColorIndex === i;
+                        return (
+                          <button
+                            key={i}
+                            onClick={() => setNewAreaColorIndex(i)}
+                            className="flex items-center justify-center w-9 h-9 rounded-xl transition-all"
+                            style={{
+                              background: color.css,
+                              opacity: isColorSelected ? 1 : 0.6,
+                              transform: isColorSelected ? 'scale(1.1)' : 'scale(0.9)',
+                              boxShadow: isColorSelected ? '0 4px 12px rgba(0,0,0,0.15)' : 'none',
+                            }}
+                          >
+                            <i
+                              className="bx bx-check text-xl text-white transition-all"
+                              style={{
+                                opacity: isColorSelected ? 1 : 0,
+                                transform: isColorSelected ? 'scale(1)' : 'scale(0.5)',
+                                filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.2))',
+                              }}
+                            />
+                          </button>
+                        );
+                      })}
+                    </div>
 
-                        {/* アイコン選択（使用済みを除外） */}
-                        <p className="text-xs font-bold text-sub mb-2 pl-1">アイコンを選ぶ</p>
-                        <div className="flex gap-2 overflow-x-auto pb-2 mb-4" style={{ scrollbarWidth: 'none' }}>
-                          {(() => {
-                            const usedIcons = new Set(areas.map(a => a.iconName));
-                            const availableIcons = AREA_ICONS.filter(icon => !usedIcons.has(icon.name));
-                            return (availableIcons.length > 0 ? availableIcons : AREA_ICONS).map((icon) => {
-                              const isIconSelected = newAreaIcon === icon.name;
-                              const selectedColor = AREA_COLORS[newAreaColorIndex];
-                              return (
-                                <button
-                                  key={icon.name}
-                                  onClick={() => setNewAreaIcon(icon.name)}
-                                  className={`p-3 rounded-[20px] transition-all flex-shrink-0 ${
-                                    isIconSelected
-                                      ? 'bg-white/80 shadow-sm border border-white'
-                                      : 'border border-transparent hover:bg-white/40'
-                                  }`}
-                                >
-                                  <i className={`bx ${icon.name} text-2xl ${isIconSelected ? `gradient-icon bg-gradient-to-br ${selectedColor.gradient}` : 'text-sub opacity-70'}`} />
-                                </button>
-                              );
-                            });
-                          })()}
-                        </div>
+                    {/* アイコン選択（使用済みを除外） */}
+                    <p className="text-xs font-bold text-sub mb-2 pl-1">アイコンを選ぶ</p>
+                    <div className="flex gap-2 overflow-x-auto pb-2 mb-4" style={{ scrollbarWidth: 'none' }}>
+                      {(() => {
+                        const usedIcons = new Set(areas.map(a => a.iconName));
+                        const availableIcons = AREA_ICONS.filter(icon => !usedIcons.has(icon.name));
+                        return (availableIcons.length > 0 ? availableIcons : AREA_ICONS).map((icon) => {
+                          const isIconSelected = newAreaIcon === icon.name;
+                          const selectedColor = AREA_COLORS[newAreaColorIndex];
+                          return (
+                            <button
+                              key={icon.name}
+                              onClick={() => setNewAreaIcon(icon.name)}
+                              className={`p-3 rounded-[20px] transition-all flex-shrink-0 ${
+                                isIconSelected
+                                  ? 'bg-white/80 shadow-sm border border-white'
+                                  : 'border border-transparent hover:bg-white/40'
+                              }`}
+                            >
+                              <i className={`bx ${icon.name} text-2xl ${isIconSelected ? `gradient-icon bg-gradient-to-br ${selectedColor.gradient}` : 'text-sub opacity-70'}`} />
+                            </button>
+                          );
+                        });
+                      })()}
+                    </div>
 
-                        <div className="flex gap-3 justify-end">
-                          <Button variant={BUTTON_VARIANTS.NORMAL} onClick={() => setAddStep(1)} className="text-sm">
-                            戻る
-                          </Button>
-                          <Button variant={BUTTON_VARIANTS.PRIMARY} onClick={handleAddArea} disabled={isPending} className="text-sm">
-                            追加する
-                          </Button>
-                        </div>
-                      </>
+                    {addError && (
+                      <p className="text-xs text-pink-accent mb-3 pl-1">{addError}</p>
                     )}
+
+                    <div className="flex gap-3 justify-end">
+                      <Button variant={BUTTON_VARIANTS.NORMAL} onClick={() => { setIsAdding(false); setNewAreaName(''); setAddError(''); }} className="text-sm">
+                        キャンセル
+                      </Button>
+                      <Button variant={BUTTON_VARIANTS.PRIMARY} onClick={handleAddArea} className="text-sm">
+                        追加する
+                      </Button>
+                    </div>
                   </div>
                 )}
 
                 {/* 編集モード切り替え（グリッド末尾） */}
                 <button
                   onClick={() => {
-                    if (isEditingAreas) { setIsAdding(false); setNewAreaName(''); setAddStep(1); }
+                    if (isEditingAreas) { setIsAdding(false); setNewAreaName(''); setAddError(''); }
                     setIsEditingAreas(!isEditingAreas);
                   }}
                   className={`flex items-center justify-center gap-2 rounded-[24px] border transition-all ${
@@ -356,8 +347,8 @@ export function FeedSheet({
                       : 'flex-col py-4 bg-white/20 border-transparent hover:bg-white/30'
                   }`}
                 >
-                  <i className={`bx ${isEditingAreas ? 'bx-check' : 'bx-pencil'} ${isEditingAreas ? 'text-xl' : 'text-2xl'} text-sub/50`} />
-                  <span className={`text-sub/50 ${isEditingAreas ? 'text-xs font-bold' : 'text-xs'}`}>{isEditingAreas ? '完了' : '場所を編集'}</span>
+                  <i className={`bx ${isEditingAreas ? 'bx-check' : 'bx-pencil'} ${isEditingAreas ? 'text-xl text-sub' : 'text-2xl text-sub/50'}`} />
+                  <span className={isEditingAreas ? 'text-xs font-bold text-sub' : 'text-xs text-sub/50'}>{isEditingAreas ? '完了' : '場所を編集'}</span>
                 </button>
               </div>
             </div>

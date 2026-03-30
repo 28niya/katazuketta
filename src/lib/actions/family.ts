@@ -4,8 +4,6 @@ import { db } from '@/lib/db';
 import { families, users } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { calculateLevel, progressToNextLevel, expThresholdForLevel } from '@/lib/exp';
-import { getHouseStage, getGardenItems } from '@/lib/evolution';
-
 export async function getFamilyWithLevel(familyId: string) {
   const family = await db.query.families.findFirst({
     where: eq(families.id, familyId),
@@ -17,8 +15,6 @@ export async function getFamilyWithLevel(familyId: string) {
   const progress = progressToNextLevel(family.totalExp);
   const currentThreshold = expThresholdForLevel(level);
   const nextThreshold = expThresholdForLevel(level + 1);
-  const houseStage = getHouseStage(level);
-  const gardenItems = getGardenItems(level);
 
   return {
     ...family,
@@ -26,8 +22,6 @@ export async function getFamilyWithLevel(familyId: string) {
     progress,
     currentThreshold,
     nextThreshold,
-    houseStage,
-    gardenItems,
   };
 }
 

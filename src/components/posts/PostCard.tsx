@@ -76,7 +76,7 @@ export function PostCard({
             className={`bx ${area.iconName} text-6xl gradient-icon bg-gradient-to-br ${areaColor.gradient} mb-3`}
           />
         )}
-        <p className="text-center font-bold text-lg leading-relaxed">
+        <p className="text-center font-bold text-base leading-relaxed">
           {post.memo || area?.name}
         </p>
       </div>
