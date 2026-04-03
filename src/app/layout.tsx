@@ -1,12 +1,5 @@
 import type { Metadata } from 'next';
-import { Kaisei_Decol } from 'next/font/google';
 import './globals.css';
-
-const kaiseiDecol = Kaisei_Decol({
-  weight: ['400', '700'],
-  subsets: ['latin'],
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   title: 'かたづけッタ',
@@ -19,8 +12,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" className={kaiseiDecol.className}>
+    <html lang="ja" className="font-kaisei">
       <head>
+        <link
+          rel="preconnect"
+          href="https://fonts.googleapis.com"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&display=swap"
+          rel="stylesheet"
+        />
         <link
           href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
           rel="stylesheet"

@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme inline {
+  --font-kaisei: "Kaisei Decol", serif;
   /* カラー */
   --color-main: #1a1f36;
   --color-sub: #4a5568;

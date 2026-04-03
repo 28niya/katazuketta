@@ -17,17 +17,15 @@ export default async function HomePage() {
   ]);
 
   return (
-    <div className="md:grid md:grid-cols-2 md:gap-6 md:px-6 md:py-4">
+    <div className="md:grid md:grid-cols-2 md:gap-6 p-6">
       {/* レベルゲージ（常に表示） */}
-      <div className="px-5 py-4 md:px-0">
-        <LevelGauge
-          level={family.level}
-          totalExp={family.totalExp}
-          currentThreshold={family.currentThreshold}
-          nextThreshold={family.nextThreshold}
-          progress={family.progress}
-        />
-      </div>
+      <LevelGauge
+        level={family.level}
+        totalExp={family.totalExp}
+        currentThreshold={family.currentThreshold}
+        nextThreshold={family.nextThreshold}
+        progress={family.progress}
+      />
 
       {/* モバイル: ボトムシート */}
       <BottomSheet>
