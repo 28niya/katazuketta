@@ -11,7 +11,6 @@ export function LevelGauge({ level, totalExp, currentThreshold, nextThreshold, p
   const dashOffset = 100 - Math.min(progress * 100, 100);
 
   return (
-    <div className="flex items-start justify-center">
       <div
         className="relative w-70 h-70"
         style={{ filter: 'drop-shadow(0 12px 24px rgba(31,38,135,0.06))' }}
@@ -66,6 +65,5 @@ export function LevelGauge({ level, totalExp, currentThreshold, nextThreshold, p
           </div>
         </div>
       </div>
-    </div>
   );
 }

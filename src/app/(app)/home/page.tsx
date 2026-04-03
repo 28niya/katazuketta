@@ -19,6 +19,7 @@ export default async function HomePage() {
   return (
     <div className="md:grid md:grid-cols-2 md:gap-6 p-6">
       {/* レベルゲージ（常に表示） */}
+      <div className="flex justify-center md:sticky md:top-6 md:self-start">
       <LevelGauge
         level={family.level}
         totalExp={family.totalExp}
@@ -26,6 +27,7 @@ export default async function HomePage() {
         nextThreshold={family.nextThreshold}
         progress={family.progress}
       />
+      </div>
 
       {/* モバイル: ボトムシート */}
       <BottomSheet>
