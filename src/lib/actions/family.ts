@@ -2,7 +2,7 @@
 
 import { db } from '@/lib/db';
 import { families, users } from '@/lib/db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 import { calculateLevel, progressToNextLevel, expThresholdForLevel } from '@/lib/exp';
 export async function getFamilyWithLevel(familyId: string) {
   const family = await db.query.families.findFirst({
@@ -23,6 +23,14 @@ export async function getFamilyWithLevel(familyId: string) {
     currentThreshold,
     nextThreshold,
   };
+}
+
+export async function getUser(userId: string) {
+  const user = await db.query.users.findFirst({
+    where: eq(users.id, userId),
+  });
+  if (!user) throw new Error('ユーザーが見つかりません');
+  return user;
 }
 
 export async function getFamilyMembers(familyId: string) {
@@ -59,4 +67,69 @@ export async function joinFamilyByCode(inviteCode: string) {
   if (!family) throw new Error('コードが見つかりません');
 
   return family;
+}
+
+export async function createChildAccount(
+  familyId: string,
+  inviteCode: string,
+  nickname: string,
+  pin: string,
+  avatarIcon: string,
+  avatarColor: string,
+) {
+  // バリデーション
+  if (!nickname.trim()) throw new Error('ニックネームを入力してください');
+  if (nickname.length > 50) throw new Error('ニックネームは50文字以内にしてください');
+  if (!/^\d{6,8}$/.test(pin)) throw new Error('PINは数字6〜8桁で入力してください');
+
+  // 同じ家族内で重複するニックネームをチェック
+  const existing = await db.query.users.findFirst({
+    where: and(eq(users.familyId, familyId), eq(users.name, nickname.trim())),
+  });
+  if (existing) throw new Error('同じ名前のメンバーがいます');
+
+  // ダミーメール生成
+  const email = `${inviteCode}-${nickname.trim()}@child.internal`;
+
+  // PIN のハッシュ化（MVP では簡易ハッシュ、本番では bcrypt 等に置換）
+  const encoder = new TextEncoder();
+  const data = encoder.encode(pin);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const pinHash = Array.from(new Uint8Array(hashBuffer))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+
+  const [child] = await db
+    .insert(users)
+    .values({
+      familyId,
+      email,
+      name: nickname.trim(),
+      role: 'MEMBER',
+      authType: 'CHILD_PIN',
+      avatarIcon,
+      avatarColor,
+      pinHash,
+    })
+    .returning();
+
+  return child;
+}
+
+export async function updateProfile(
+  userId: string,
+  name: string,
+  avatarIcon: string,
+  avatarColor: string,
+) {
+  if (!name.trim()) throw new Error('名前を入力してください');
+  if (name.length > 50) throw new Error('名前は50文字以内にしてください');
+
+  const [updated] = await db
+    .update(users)
+    .set({ name: name.trim(), avatarIcon, avatarColor })
+    .where(eq(users.id, userId))
+    .returning();
+
+  return updated;
 }

@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 
 const NAV_ITEMS = [
   { href: '/home', icon: 'bxs-home-smile', label: 'おうち' },
-  { href: '/settings', icon: 'bxs-cog', label: '設定' },
+  { href: '/family', icon: 'bxs-group', label: 'かぞく' },
 ];
 
 export function Navigation() {
