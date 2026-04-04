@@ -38,7 +38,6 @@ export function BottomSheet({ children, peekHeight = 280 }: BottomSheetProps) {
 
   const handleDragEnd = useCallback(() => {
     dragRef.current.dragging = false;
-    // スナップ: 半分以上引き上げたら展開、そうでなければpeek
     if (translateY > sheetMaxTranslate / 2) {
       setTranslateY(sheetMaxTranslate);
       setExpanded(true);
@@ -74,6 +73,14 @@ export function BottomSheet({ children, peekHeight = 280 }: BottomSheetProps) {
     }
   };
 
+  // 折りたたみ時: コンテンツ領域のタップで展開
+  const handleContentClick = () => {
+    if (!expanded) {
+      setTranslateY(sheetMaxTranslate);
+      setExpanded(true);
+    }
+  };
+
   return (
     <div
       ref={sheetRef}
@@ -85,7 +92,7 @@ export function BottomSheet({ children, peekHeight = 280 }: BottomSheetProps) {
     >
       {/* ドラッグハンドル */}
       <div
-        className="flex justify-center pt-3 pb-2 cursor-grab active:cursor-grabbing"
+        className="flex justify-center pt-4 pb-4 cursor-grab active:cursor-grabbing"
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
@@ -96,7 +103,11 @@ export function BottomSheet({ children, peekHeight = 280 }: BottomSheetProps) {
       </div>
 
       {/* コンテンツ */}
-      <div className={`px-5 pb-6 ${expanded ? 'overflow-y-auto' : 'overflow-hidden'}`} style={{ height: 'calc(100% - 28px)' }}>
+      <div
+        className={`px-5 pb-6 ${expanded ? 'overflow-y-auto' : 'overflow-hidden cursor-pointer'}`}
+        style={{ height: 'calc(100% - 40px)' }}
+        onClick={handleContentClick}
+      >
         {children}
       </div>
     </div>
