@@ -108,7 +108,7 @@ export function AddChildForm({ familyId, inviteCode, onAdded, onCancel }: Props)
       {/* アイコンを選ぶ */}
       <div>
         <p className="text-xs font-bold text-sub mb-2 pl-1">アイコンを選ぶ</p>
-        <div className="flex gap-2 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none' }}>
+        <div className="grid grid-cols-5 gap-2">
           {AVATAR_ICONS.map((icon) => {
             const isIconSelected = selectedIcon === icon.name;
             const selectedColor = AREA_COLORS[selectedColorIndex];
@@ -117,7 +117,7 @@ export function AddChildForm({ familyId, inviteCode, onAdded, onCancel }: Props)
                 key={icon.name}
                 type="button"
                 onClick={() => setSelectedIcon(icon.name)}
-                className={`p-3 rounded-[20px] transition-all flex-shrink-0 ${
+                className={`p-3 rounded-[20px] transition-all ${
                   isIconSelected
                     ? 'bg-white/80 shadow-sm border border-white'
                     : 'border border-transparent hover:bg-white/40'

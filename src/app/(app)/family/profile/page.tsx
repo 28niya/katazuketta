@@ -1,11 +1,11 @@
 import { getUser } from '@/lib/actions/family';
 import { ProfileForm } from '@/components/family/ProfileForm';
 import { BackLink } from '@/components/family/BackLink';
-
-const DEMO_USER_ID = process.env.DEMO_USER_ID!;
+import { requireAuth } from '@/lib/auth/session';
 
 export default async function ProfilePage() {
-  const user = await getUser(DEMO_USER_ID);
+  const session = await requireAuth();
+  const user = await getUser(session.user.id);
 
   return (
     <div className="p-6 flex flex-col gap-6 max-w-lg mx-auto">

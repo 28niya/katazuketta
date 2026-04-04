@@ -34,6 +34,23 @@ export const users = pgTable('users', {
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
 
+// --- accounts (OAuth連携) ---
+export const accounts = pgTable('accounts', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  userId: uuid('user_id').references(() => users.id, { onDelete: 'cascade' }).notNull(),
+  type: varchar('type', { length: 255 }).notNull(),
+  provider: varchar('provider', { length: 255 }).notNull(),
+  providerAccountId: varchar('provider_account_id', { length: 255 }).notNull(),
+  refreshToken: text('refresh_token'),
+  accessToken: text('access_token'),
+  expiresAt: integer('expires_at'),
+  tokenType: varchar('token_type', { length: 255 }),
+  scope: varchar('scope', { length: 255 }),
+  idToken: text('id_token'),
+}, (table) => [
+  uniqueIndex('accounts_provider_account_idx').on(table.provider, table.providerAccountId),
+]);
+
 // --- areas (おうちの場所) ---
 export const areas = pgTable('areas', {
   id: uuid('id').defaultRandom().primaryKey(),

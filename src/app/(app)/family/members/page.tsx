@@ -4,15 +4,15 @@ import { families } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { MembersPageClient } from '@/components/family/MembersPageClient';
 import { BackLink } from '@/components/family/BackLink';
-
-const DEMO_FAMILY_ID = process.env.DEMO_FAMILY_ID!;
-const DEMO_USER_ID = process.env.DEMO_USER_ID!;
+import { requireAuth } from '@/lib/auth/session';
 
 export default async function MembersPage() {
+  const session = await requireAuth();
+
   const [currentUser, members, family] = await Promise.all([
-    getUser(DEMO_USER_ID),
-    getFamilyMembers(DEMO_FAMILY_ID),
-    db.query.families.findFirst({ where: eq(families.id, DEMO_FAMILY_ID) }),
+    getUser(session.user.id),
+    getFamilyMembers(session.user.familyId),
+    db.query.families.findFirst({ where: eq(families.id, session.user.familyId) }),
   ]);
 
   if (!family) throw new Error('家族が見つかりません');

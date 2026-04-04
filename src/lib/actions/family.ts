@@ -116,6 +116,52 @@ export async function createChildAccount(
   return child;
 }
 
+export async function onboardCreateFamily(
+  email: string,
+  userName: string,
+  familyName: string,
+  avatarIcon: string,
+  avatarColor: string,
+) {
+  const family = await createFamily(familyName);
+  const [user] = await db
+    .insert(users)
+    .values({
+      familyId: family.id,
+      email,
+      name: userName.trim(),
+      role: 'ADMIN',
+      authType: 'OAUTH',
+      avatarIcon,
+      avatarColor,
+    })
+    .returning();
+  return { family, user };
+}
+
+export async function onboardJoinFamily(
+  email: string,
+  userName: string,
+  inviteCode: string,
+  avatarIcon: string,
+  avatarColor: string,
+) {
+  const family = await joinFamilyByCode(inviteCode);
+  const [user] = await db
+    .insert(users)
+    .values({
+      familyId: family.id,
+      email,
+      name: userName.trim(),
+      role: 'MEMBER',
+      authType: 'OAUTH',
+      avatarIcon,
+      avatarColor,
+    })
+    .returning();
+  return { family, user };
+}
+
 export async function updateProfile(
   userId: string,
   name: string,

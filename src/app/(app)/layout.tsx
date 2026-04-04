@@ -1,14 +1,14 @@
 import Link from 'next/link';
 import { getUser } from '@/lib/actions/family';
-
-const DEMO_USER_ID = process.env.DEMO_USER_ID!;
+import { requireAuth } from '@/lib/auth/session';
 
 export default async function AppLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getUser(DEMO_USER_ID);
+  const session = await requireAuth();
+  const user = await getUser(session.user.id);
 
   return (
     <div className="min-h-dvh flex flex-col">

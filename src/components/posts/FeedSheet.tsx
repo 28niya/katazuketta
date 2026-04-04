@@ -296,7 +296,7 @@ export function FeedSheet({
 
                     {/* アイコン選択（使用済みを除外） */}
                     <p className="text-xs font-bold text-sub mb-2 pl-1">アイコンを選ぶ</p>
-                    <div className="flex gap-2 overflow-x-auto pb-2 mb-4" style={{ scrollbarWidth: 'none' }}>
+                    <div className="grid grid-cols-5 gap-2 mb-4">
                       {(() => {
                         const usedIcons = new Set(areas.map(a => a.iconName));
                         const availableIcons = AREA_ICONS.filter(icon => !usedIcons.has(icon.name));
@@ -307,7 +307,7 @@ export function FeedSheet({
                             <button
                               key={icon.name}
                               onClick={() => setNewAreaIcon(icon.name)}
-                              className={`p-3 rounded-[20px] transition-all flex-shrink-0 ${
+                              className={`p-3 rounded-[20px] transition-all ${
                                 isIconSelected
                                   ? 'bg-white/80 shadow-sm border border-white'
                                   : 'border border-transparent hover:bg-white/40'

@@ -4,16 +4,16 @@ import { FeedSheet } from '@/components/posts/FeedSheet';
 import { getFamilyWithLevel } from '@/lib/actions/family';
 import { getAreas } from '@/lib/actions/areas';
 import { getFeedData } from '@/lib/actions/feed';
-
-// TODO: セッションから取得する。仮でseedデータのIDを使用
-const DEMO_FAMILY_ID = process.env.DEMO_FAMILY_ID!;
-const DEMO_USER_ID = process.env.DEMO_USER_ID!;
+import { requireAuth } from '@/lib/auth/session';
 
 export default async function HomePage() {
+  const session = await requireAuth();
+  const { id: userId, familyId } = session.user;
+
   const [family, areas, feedData] = await Promise.all([
-    getFamilyWithLevel(DEMO_FAMILY_ID),
-    getAreas(DEMO_FAMILY_ID),
-    getFeedData(DEMO_FAMILY_ID, DEMO_USER_ID),
+    getFamilyWithLevel(familyId),
+    getAreas(familyId),
+    getFeedData(familyId, userId),
   ]);
 
   return (
@@ -37,8 +37,8 @@ export default async function HomePage() {
           areas={areas}
           areaMap={feedData.areaMap}
           reactions={feedData.reactions}
-          familyId={DEMO_FAMILY_ID}
-          currentUserId={DEMO_USER_ID}
+          familyId={familyId}
+          currentUserId={userId}
         />
       </BottomSheet>
 
@@ -50,8 +50,8 @@ export default async function HomePage() {
           areas={areas}
           areaMap={feedData.areaMap}
           reactions={feedData.reactions}
-          familyId={DEMO_FAMILY_ID}
-          currentUserId={DEMO_USER_ID}
+          familyId={familyId}
+          currentUserId={userId}
         />
       </div>
     </div>

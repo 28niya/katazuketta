@@ -15,6 +15,13 @@
       "when": 1774679149683,
       "tag": "0001_stormy_leo",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1775284388655,
+      "tag": "0002_yielding_deathstrike",
+      "breakpoints": true
     }
   ]
 }
