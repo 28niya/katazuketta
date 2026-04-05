@@ -30,7 +30,7 @@ export default async function HomePage() {
           nextThreshold={family.nextThreshold}
           progress={family.progress}
         />
-        <MemberExpBar members={memberStats} />
+        <MemberExpBar members={memberStats} totalExp={family.totalExp} />
       </div>
 
       {/* モバイル: ボトムシート */}

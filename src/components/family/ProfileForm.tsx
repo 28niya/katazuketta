@@ -4,10 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button, BUTTON_VARIANTS } from '@/components/ui/Button';
-import { AVATAR_ICONS, AREA_COLORS } from '@/types';
+import { AVATAR_ICONS, AREA_COLORS, AVATAR_COLOR_VALUES } from '@/types';
 import { updateProfile } from '@/lib/actions/family';
-
-const AVATAR_COLOR_VALUES = AREA_COLORS.map((c) => c.css.match(/#[0-9a-f]{6}/gi)?.[0] ?? '#4a5568');
 
 type User = {
   id: string;

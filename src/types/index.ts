@@ -29,18 +29,10 @@ export type ExpReason = typeof EXP_REASONS[keyof typeof EXP_REASONS];
 export type UserRole = typeof USER_ROLES[keyof typeof USER_ROLES];
 export type AuthType = typeof AUTH_TYPES[keyof typeof AUTH_TYPES];
 
-// --- 開発用シードユーザー ---
-
-export const DEV_USERS = [
-  { email: 'mama@example.com', name: 'ママ', role: USER_ROLES.ADMIN, authType: AUTH_TYPES.OAUTH, avatarColor: '#ed64a6', avatarIcon: 'bxs-heart' },
-  { email: 'papa@example.com', name: 'パパ', role: USER_ROLES.MEMBER, authType: AUTH_TYPES.OAUTH, avatarColor: '#38b2ac', avatarIcon: 'bxs-star' },
-  { email: 'ABC123-たろう@child.internal', name: 'たろう', role: USER_ROLES.MEMBER, authType: AUTH_TYPES.CHILD_PIN, avatarColor: '#f6ad55', avatarIcon: 'bxs-cat' },
-] as const;
-
 // --- EXP ---
 
 export const EXP_PER_POST = 20;
-export const LEVEL_DIVISOR = 20;
+export const LEVEL_DIVISOR = 40;
 
 // --- ユーザー アバターアイコン ---
 
@@ -73,6 +65,24 @@ export const AREA_COLORS = [
   { gradient: 'from-[#a18cd1] to-[#fbc2eb]', css: 'linear-gradient(135deg, #a18cd1, #fbc2eb)', bg: '#ede6f6',
     activeBg: 'linear-gradient(to bottom right, rgba(161,140,209,0.15), rgba(251,194,235,0.15))', activeBorder: 'rgba(161,140,209,0.4)', activeShadow: 'rgba(161,140,209,0.2)', activeText: '#a18cd1' },     // ラベンダー
 ] as const;
+
+// --- アバターカラー（AREA_COLORSの先頭カラー = DBに保存する単色値） ---
+
+export const AVATAR_COLOR_VALUES = AREA_COLORS.map((c) => c.css.match(/#[0-9a-f]{6}/gi)?.[0] ?? '#4a5568');
+
+// 単色 → AREA_COLORSインデックス逆引き
+const avatarColorToIndex = new Map(AVATAR_COLOR_VALUES.map((c, i) => [c, i]));
+export function getColorIndexByAvatarColor(avatarColor: string | null): number {
+  return avatarColorToIndex.get(avatarColor ?? '') ?? 0;
+}
+
+// --- 開発用シードユーザー ---
+
+export const DEV_USERS = [
+  { email: 'mama@example.com', name: 'ママ', role: USER_ROLES.ADMIN, authType: AUTH_TYPES.OAUTH, avatarColor: AVATAR_COLOR_VALUES[4], avatarIcon: AVATAR_ICONS[4].name },
+  { email: 'papa@example.com', name: 'パパ', role: USER_ROLES.MEMBER, authType: AUTH_TYPES.OAUTH, avatarColor: AVATAR_COLOR_VALUES[0], avatarIcon: AVATAR_ICONS[3].name },
+  { email: 'ABC123-たろう@child.internal', name: 'たろう', role: USER_ROLES.MEMBER, authType: AUTH_TYPES.CHILD_PIN, avatarColor: AVATAR_COLOR_VALUES[3], avatarIcon: AVATAR_ICONS[1].name },
+];
 
 // --- エリア アイコンパレット ---
 

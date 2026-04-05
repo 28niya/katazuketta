@@ -1,7 +1,7 @@
 'use server';
 
 import { db } from '@/lib/db';
-import { families, users, expLogs } from '@/lib/db/schema';
+import { families, users, expLogs, posts } from '@/lib/db/schema';
 import { eq, and, sql } from 'drizzle-orm';
 import { calculateLevel, progressToNextLevel, expThresholdForLevel } from '@/lib/exp';
 import { USER_ROLES, AUTH_TYPES } from '@/types';
@@ -177,7 +177,17 @@ export async function getMemberExpStats(familyId: string) {
     .where(eq(expLogs.familyId, familyId))
     .groupBy(expLogs.userId);
 
+  const postCounts = await db
+    .select({
+      userId: posts.userId,
+      count: sql<number>`count(*)::int`,
+    })
+    .from(posts)
+    .where(eq(posts.familyId, familyId))
+    .groupBy(posts.userId);
+
   const expMap = Object.fromEntries(expResults.map((r) => [r.userId, r.totalExp]));
+  const postMap = Object.fromEntries(postCounts.map((r) => [r.userId, r.count]));
 
   return members.map((m) => ({
     id: m.id,
@@ -185,6 +195,7 @@ export async function getMemberExpStats(familyId: string) {
     avatarIcon: m.avatarIcon,
     avatarColor: m.avatarColor,
     exp: expMap[m.id] ?? 0,
+    postCount: postMap[m.id] ?? 0,
   }));
 }
 
