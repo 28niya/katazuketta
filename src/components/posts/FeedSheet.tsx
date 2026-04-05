@@ -46,9 +46,18 @@ type FeedSheetProps = {
   reactions: Record<string, Reaction>;
   familyId: string;
   currentUserId: string;
+  /** FABをportalで表示するか（デフォルトtrue、PC版はfalse） */
+  showFab?: boolean;
 };
 
-type ViewState = 'feed' | 'sliding-out' | 'sliding-in' | 'form';
+const VIEW = {
+  FEED: 'FEED',
+  SLIDING_OUT: 'SLIDING_OUT',
+  SLIDING_IN: 'SLIDING_IN',
+  FORM: 'FORM',
+} as const;
+
+type ViewState = typeof VIEW[keyof typeof VIEW];
 
 export function FeedSheet({
   posts,
@@ -58,8 +67,9 @@ export function FeedSheet({
   reactions,
   familyId,
   currentUserId,
+  showFab = true,
 }: FeedSheetProps) {
-  const [view, setView] = useState<ViewState>('feed');
+  const [view, setView] = useState<ViewState>(VIEW.FEED);
   const [showForm, setShowForm] = useState(false);
   const [selectedAreaId, setSelectedAreaId] = useState<string | null>(null);
   const [memo, setMemo] = useState('');
@@ -76,23 +86,23 @@ export function FeedSheet({
   useEffect(() => setMounted(true), []);
 
   const switchToForm = useCallback(() => {
-    setView('sliding-out');
+    setView(VIEW.SLIDING_OUT);
     setTimeout(() => {
       setShowForm(true);
-      setView('sliding-in');
-      setTimeout(() => setView('form'), 250);
+      setView(VIEW.SLIDING_IN);
+      setTimeout(() => setView(VIEW.FORM), 250);
     }, 250);
   }, []);
 
   const switchToFeed = useCallback(() => {
-    setView('sliding-out');
+    setView(VIEW.SLIDING_OUT);
     setTimeout(() => {
       setShowForm(false);
       setSelectedAreaId(null);
       setMemo('');
       setIsAdding(false);
-      setView('sliding-in');
-      setTimeout(() => setView('feed'), 250);
+      setView(VIEW.SLIDING_IN);
+      setTimeout(() => setView(VIEW.FEED), 250);
     }, 250);
   }, []);
 
@@ -103,8 +113,8 @@ export function FeedSheet({
       setMemo('');
       setSelectedAreaId(null);
       setShowForm(false);
-      setView('sliding-in');
-      setTimeout(() => setView('feed'), 250);
+      setView(VIEW.SLIDING_IN);
+      setTimeout(() => setView(VIEW.FEED), 250);
       router.refresh();
     });
   };
@@ -134,8 +144,8 @@ export function FeedSheet({
   };
 
   const slideClass =
-    view === 'sliding-out' ? 'animate-sheet-out' :
-    view === 'sliding-in' ? 'animate-sheet-in' : '';
+    view === VIEW.SLIDING_OUT ? 'animate-sheet-out' :
+    view === VIEW.SLIDING_IN ? 'animate-sheet-in' : '';
 
   return (
     <div className="relative">
@@ -402,9 +412,9 @@ export function FeedSheet({
         )}
       </div>
 
-      {/* FAB: ポータルで画面に直接配置 */}
-      {!showForm && mounted && createPortal(
-        <Button variant={BUTTON_VARIANTS.PRIMARY} onClick={switchToForm} className="fixed bottom-8 right-6 z-50 text-sm">
+      {/* FAB: portalでbodyに配置 */}
+      {showFab && !showForm && mounted && createPortal(
+        <Button variant={BUTTON_VARIANTS.PRIMARY} onClick={switchToForm} className="md:hidden fixed bottom-8 right-6 z-50 text-sm">
           投稿
         </Button>,
         document.body,

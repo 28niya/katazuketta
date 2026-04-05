@@ -7,6 +7,7 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { AddChildWrapper } from '@/components/family/AddChildWrapper';
 import { BackLink } from '@/components/family/BackLink';
 import { requireAuth } from '@/lib/auth/session';
+import { USER_ROLES } from '@/types';
 
 export default async function AddChildPage() {
   const session = await requireAuth();
@@ -16,7 +17,7 @@ export default async function AddChildPage() {
     db.query.families.findFirst({ where: eq(families.id, session.user.familyId) }),
   ]);
 
-  if (currentUser.role !== 'ADMIN' || !family) redirect('/family');
+  if (currentUser.role !== USER_ROLES.ADMIN || !family) redirect('/family');
 
   return (
     <div className="p-6 flex flex-col gap-6 max-w-lg mx-auto">

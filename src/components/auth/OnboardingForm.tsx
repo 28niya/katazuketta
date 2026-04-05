@@ -8,10 +8,18 @@ import { onboardCreateFamily, onboardJoinFamily } from '@/lib/actions/family';
 
 const AVATAR_COLOR_VALUES = AREA_COLORS.map((c) => c.css.match(/#[0-9a-f]{6}/gi)?.[0] ?? '#4a5568');
 
-type Mode = 'select' | 'create' | 'join' | 'profile';
+const ONBOARDING_STEP = {
+  SELECT: 'SELECT',
+  CREATE: 'CREATE',
+  JOIN: 'JOIN',
+  PROFILE: 'PROFILE',
+} as const;
+
+type OnboardingStep = typeof ONBOARDING_STEP[keyof typeof ONBOARDING_STEP];
+type FlowType = typeof ONBOARDING_STEP.CREATE | typeof ONBOARDING_STEP.JOIN;
 
 export function OnboardingForm({ email, name: initialName }: { email: string; name: string }) {
-  const [mode, setMode] = useState<Mode>('select');
+  const [step, setStep] = useState<OnboardingStep>(ONBOARDING_STEP.SELECT);
   const [userName, setUserName] = useState(initialName);
   const [familyName, setFamilyName] = useState('');
   const [inviteCode, setInviteCode] = useState('');
@@ -19,21 +27,20 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  // create or join を記憶してprofileステップで使う
-  const [flowType, setFlowType] = useState<'create' | 'join'>('create');
+  const [flowType, setFlowType] = useState<FlowType>(ONBOARDING_STEP.CREATE);
 
-  const goToProfile = (type: 'create' | 'join') => {
+  const goToProfile = (type: FlowType) => {
     setError('');
-    if (type === 'create' && !familyName.trim()) {
+    if (type === ONBOARDING_STEP.CREATE && !familyName.trim()) {
       setError('家族名を入力してください');
       return;
     }
-    if (type === 'join' && !inviteCode.trim()) {
+    if (type === ONBOARDING_STEP.JOIN && !inviteCode.trim()) {
       setError('招待コードを入力してください');
       return;
     }
     setFlowType(type);
-    setMode('profile');
+    setStep(ONBOARDING_STEP.PROFILE);
   };
 
   const handleSubmit = async () => {
@@ -41,7 +48,7 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
     if (!userName.trim()) { setError('名前を入力してください'); return; }
     setSubmitting(true);
     try {
-      if (flowType === 'create') {
+      if (flowType === ONBOARDING_STEP.CREATE) {
         await onboardCreateFamily(email, userName.trim(), familyName.trim(), selectedIcon, AVATAR_COLOR_VALUES[selectedColorIndex]);
       } else {
         await onboardJoinFamily(email, userName.trim(), inviteCode.trim(), selectedIcon, AVATAR_COLOR_VALUES[selectedColorIndex]);
@@ -55,14 +62,14 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
   };
 
   // ステップ1: 選択
-  if (mode === 'select') {
+  if (step === ONBOARDING_STEP.SELECT) {
     return (
       <div className="w-full max-w-sm flex flex-col gap-4">
         <GlassCard>
           <div className="flex flex-col gap-4">
             <Button
               variant={BUTTON_VARIANTS.PRIMARY}
-              onClick={() => setMode('create')}
+              onClick={() => setStep(ONBOARDING_STEP.CREATE)}
               className="w-full justify-center"
             >
               <i className="bx bxs-home-heart text-lg" />
@@ -77,7 +84,7 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
 
             <Button
               variant={BUTTON_VARIANTS.GLASS}
-              onClick={() => setMode('join')}
+              onClick={() => setStep(ONBOARDING_STEP.JOIN)}
               className="w-full justify-center"
             >
               <i className="bx bxs-group text-lg" />
@@ -90,13 +97,13 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
   }
 
   // ステップ2: 家族名 or 招待コード
-  if (mode === 'create' || mode === 'join') {
+  if (step === ONBOARDING_STEP.CREATE || step === ONBOARDING_STEP.JOIN) {
     return (
       <div className="w-full max-w-sm flex flex-col gap-4">
         <GlassCard>
           <div className="flex flex-col gap-5">
             <button
-              onClick={() => { setMode('select'); setError(''); }}
+              onClick={() => { setStep(ONBOARDING_STEP.SELECT); setError(''); }}
               className="flex items-center gap-1 text-sm text-sub hover:opacity-70 transition-opacity self-start"
             >
               <i className="bx bx-chevron-left text-xl" />
@@ -104,10 +111,10 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
             </button>
 
             <h2 className="font-bold text-center">
-              {mode === 'create' ? '家族をつくる' : '招待コードで参加'}
+              {step === ONBOARDING_STEP.CREATE ? '家族をつくる' : '招待コードで参加'}
             </h2>
 
-            {mode === 'create' && (
+            {step === ONBOARDING_STEP.CREATE && (
               <div>
                 <p className="text-xs font-bold text-sub mb-2 pl-1">家族名</p>
                 <input
@@ -121,7 +128,7 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
               </div>
             )}
 
-            {mode === 'join' && (
+            {step === ONBOARDING_STEP.JOIN && (
               <div>
                 <p className="text-xs font-bold text-sub mb-2 pl-1">招待コード</p>
                 <input
@@ -141,7 +148,7 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
 
             <Button
               variant={BUTTON_VARIANTS.PRIMARY}
-              onClick={() => goToProfile(mode)}
+              onClick={() => goToProfile(step as FlowType)}
               className="self-center"
             >
               つぎへ
@@ -160,7 +167,7 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
       <GlassCard>
         <div className="flex flex-col gap-5">
           <button
-            onClick={() => { setMode(flowType); setError(''); }}
+            onClick={() => { setStep(flowType); setError(''); }}
             className="flex items-center gap-1 text-sm text-sub hover:opacity-70 transition-opacity self-start"
           >
             <i className="bx bx-chevron-left text-xl" />

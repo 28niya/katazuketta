@@ -3,17 +3,41 @@
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { GlassCard } from '@/components/ui/GlassCard';
+import { DEV_USERS, IS_DEV } from '@/types';
 import { Button, BUTTON_VARIANTS } from '@/components/ui/Button';
 
-type Mode = 'select' | 'child';
+const LOGIN_MODE = {
+  SELECT: 'SELECT',
+  CHILD: 'CHILD',
+} as const;
+
+type LoginMode = typeof LOGIN_MODE[keyof typeof LOGIN_MODE];
 
 export function LoginForm() {
-  const [mode, setMode] = useState<Mode>('select');
+  const [mode, setMode] = useState<LoginMode>(LOGIN_MODE.SELECT);
   const [familyCode, setFamilyCode] = useState('');
   const [nickname, setNickname] = useState('');
   const [pin, setPin] = useState('');
+  const [devEmail, setDevEmail] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+
+  const handleDevLogin = async (email: string) => {
+    setError('');
+    setSubmitting(true);
+    try {
+      const result = await signIn('dev-login', { email, redirect: false });
+      if (result?.error) {
+        setError('ユーザーが見つかりません');
+      } else {
+        window.location.href = '/home';
+      }
+    } catch {
+      setError('ログインに失敗しました');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const handleGoogleLogin = () => {
     signIn('google', { callbackUrl: '/home' });
@@ -41,7 +65,7 @@ export function LoginForm() {
     }
   };
 
-  if (mode === 'select') {
+  if (mode === LOGIN_MODE.SELECT) {
     return (
       <div className="w-full max-w-sm flex flex-col gap-4">
         <GlassCard>
@@ -67,12 +91,34 @@ export function LoginForm() {
 
             <Button
               variant={BUTTON_VARIANTS.GLASS}
-              onClick={() => setMode('child')}
+              onClick={() => setMode(LOGIN_MODE.CHILD)}
               className="w-full justify-center"
             >
               <i className="bx bxs-baby-carriage text-lg" />
               子どもアカウントでログイン
             </Button>
+
+            {IS_DEV && (
+              <>
+                <div className="flex items-center gap-4">
+                  <div className="flex-1 h-px bg-sub/20" />
+                  <span className="text-xs text-sub">DEV</span>
+                  <div className="flex-1 h-px bg-sub/20" />
+                </div>
+                <div className="flex flex-col gap-2">
+                  {DEV_USERS.map((u) => (
+                    <button
+                      key={u.email}
+                      onClick={() => handleDevLogin(u.email)}
+                      disabled={submitting}
+                      className="w-full py-2 bg-yellow-100/80 border border-yellow-300/80 rounded-2xl text-xs font-mono transition-all hover:bg-yellow-200/80 active:scale-95 disabled:opacity-40"
+                    >
+                      {u.name} ({u.email})
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </GlassCard>
       </div>
@@ -84,7 +130,7 @@ export function LoginForm() {
       <GlassCard>
         <div className="flex flex-col gap-4">
           <button
-            onClick={() => { setMode('select'); setError(''); }}
+            onClick={() => { setMode(LOGIN_MODE.SELECT); setError(''); }}
             className="flex items-center gap-1 text-sm text-sub hover:opacity-70 transition-opacity self-start"
           >
             <i className="bx bx-chevron-left text-xl" />

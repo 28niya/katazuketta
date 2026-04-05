@@ -1,3 +1,5 @@
+import { USER_ROLES, AUTH_TYPES } from '@/types';
+
 type Member = {
   id: string;
   name: string;
@@ -31,10 +33,10 @@ export function MemberList({ members, currentUserId }: Props) {
               )}
             </div>
             <div className="flex items-center gap-2 text-xs text-sub">
-              {member.role === 'ADMIN' && (
+              {member.role === USER_ROLES.ADMIN && (
                 <span className="text-green-accent font-bold">管理者</span>
               )}
-              {member.authType === 'CHILD_PIN' && (
+              {member.authType === AUTH_TYPES.CHILD_PIN && (
                 <span>子どもアカウント</span>
               )}
             </div>

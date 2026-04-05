@@ -1,9 +1,10 @@
 'use server';
 
 import { db } from '@/lib/db';
-import { families, users } from '@/lib/db/schema';
-import { eq, and } from 'drizzle-orm';
+import { families, users, expLogs } from '@/lib/db/schema';
+import { eq, and, sql } from 'drizzle-orm';
 import { calculateLevel, progressToNextLevel, expThresholdForLevel } from '@/lib/exp';
+import { USER_ROLES, AUTH_TYPES } from '@/types';
 export async function getFamilyWithLevel(familyId: string) {
   const family = await db.query.families.findFirst({
     where: eq(families.id, familyId),
@@ -105,8 +106,8 @@ export async function createChildAccount(
       familyId,
       email,
       name: nickname.trim(),
-      role: 'MEMBER',
-      authType: 'CHILD_PIN',
+      role: USER_ROLES.MEMBER,
+      authType: AUTH_TYPES.CHILD_PIN,
       avatarIcon,
       avatarColor,
       pinHash,
@@ -130,8 +131,8 @@ export async function onboardCreateFamily(
       familyId: family.id,
       email,
       name: userName.trim(),
-      role: 'ADMIN',
-      authType: 'OAUTH',
+      role: USER_ROLES.ADMIN,
+      authType: AUTH_TYPES.OAUTH,
       avatarIcon,
       avatarColor,
     })
@@ -153,13 +154,38 @@ export async function onboardJoinFamily(
       familyId: family.id,
       email,
       name: userName.trim(),
-      role: 'MEMBER',
-      authType: 'OAUTH',
+      role: USER_ROLES.MEMBER,
+      authType: AUTH_TYPES.OAUTH,
       avatarIcon,
       avatarColor,
     })
     .returning();
   return { family, user };
+}
+
+export async function getMemberExpStats(familyId: string) {
+  const members = await db.query.users.findMany({
+    where: eq(users.familyId, familyId),
+  });
+
+  const expResults = await db
+    .select({
+      userId: expLogs.userId,
+      totalExp: sql<number>`coalesce(sum(${expLogs.amount}), 0)::int`,
+    })
+    .from(expLogs)
+    .where(eq(expLogs.familyId, familyId))
+    .groupBy(expLogs.userId);
+
+  const expMap = Object.fromEntries(expResults.map((r) => [r.userId, r.totalExp]));
+
+  return members.map((m) => ({
+    id: m.id,
+    name: m.name,
+    avatarIcon: m.avatarIcon,
+    avatarColor: m.avatarColor,
+    exp: expMap[m.id] ?? 0,
+  }));
 }
 
 export async function updateProfile(

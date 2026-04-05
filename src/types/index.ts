@@ -2,6 +2,10 @@
  * かたづけッタ (Kataduketta) - Core Type Definitions
  */
 
+// --- 環境 ---
+
+export const IS_DEV = process.env.NODE_ENV === 'development';
+
 // --- 定数 ---
 
 export const EXP_REASONS = {
@@ -24,6 +28,14 @@ export const AUTH_TYPES = {
 export type ExpReason = typeof EXP_REASONS[keyof typeof EXP_REASONS];
 export type UserRole = typeof USER_ROLES[keyof typeof USER_ROLES];
 export type AuthType = typeof AUTH_TYPES[keyof typeof AUTH_TYPES];
+
+// --- 開発用シードユーザー ---
+
+export const DEV_USERS = [
+  { email: 'mama@example.com', name: 'ママ', role: USER_ROLES.ADMIN, authType: AUTH_TYPES.OAUTH, avatarColor: '#ed64a6', avatarIcon: 'bxs-heart' },
+  { email: 'papa@example.com', name: 'パパ', role: USER_ROLES.MEMBER, authType: AUTH_TYPES.OAUTH, avatarColor: '#38b2ac', avatarIcon: 'bxs-star' },
+  { email: 'ABC123-たろう@child.internal', name: 'たろう', role: USER_ROLES.MEMBER, authType: AUTH_TYPES.CHILD_PIN, avatarColor: '#f6ad55', avatarIcon: 'bxs-cat' },
+] as const;
 
 // --- EXP ---
 

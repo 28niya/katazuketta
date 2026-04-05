@@ -4,6 +4,7 @@ import Credentials from 'next-auth/providers/credentials';
 import { db } from '@/lib/db';
 import { users, accounts } from '@/lib/db/schema';
 import { eq, and } from 'drizzle-orm';
+import { AUTH_TYPES, IS_DEV } from '@/types';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -34,7 +35,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           where: eq(users.email, email),
         });
 
-        if (!user || user.authType !== 'CHILD_PIN' || !user.pinHash) return null;
+        if (!user || user.authType !== AUTH_TYPES.CHILD_PIN || !user.pinHash) return null;
 
         // PINロックチェック
         if (user.pinLockedUntil && user.pinLockedUntil > new Date()) {
@@ -74,6 +75,27 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         };
       },
     }),
+    // 開発専用: メールだけでログイン
+    ...(IS_DEV
+      ? [
+          Credentials({
+            id: 'dev-login',
+            name: 'Dev Login',
+            credentials: {
+              email: { label: 'Email' },
+            },
+            async authorize(credentials) {
+              const email = (credentials as { email: string }).email;
+              if (!email) return null;
+              const user = await db.query.users.findFirst({
+                where: eq(users.email, email),
+              });
+              if (!user) return null;
+              return { id: user.id, name: user.name, email: user.email };
+            },
+          }),
+        ]
+      : []),
   ],
   session: { strategy: 'jwt' },
   pages: {

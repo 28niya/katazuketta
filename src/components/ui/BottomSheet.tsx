@@ -17,7 +17,9 @@ export function BottomSheet({ children, peekHeight = 280 }: BottomSheetProps) {
   useEffect(() => {
     if (sheetRef.current) {
       const fullHeight = sheetRef.current.scrollHeight;
-      setSheetMaxTranslate(Math.max(0, fullHeight - peekHeight));
+      const viewportExpand = typeof window !== 'undefined' ? window.innerHeight * 0.7 - peekHeight : 0;
+      const contentExpand = fullHeight - peekHeight;
+      setSheetMaxTranslate(Math.max(0, Math.max(contentExpand, viewportExpand)));
     }
   }, [peekHeight, children]);
 
@@ -73,20 +75,11 @@ export function BottomSheet({ children, peekHeight = 280 }: BottomSheetProps) {
     }
   };
 
-  // 折りたたみ時: コンテンツ領域のタップで展開
-  const handleContentClick = () => {
-    if (!expanded) {
-      setTranslateY(sheetMaxTranslate);
-      setExpanded(true);
-    }
-  };
-
   return (
     <div
       ref={sheetRef}
       className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-glass backdrop-blur-glass border-t border-glass-border shadow-glass rounded-t-3xl transition-transform duration-300 ease-out"
       style={{
-        height: `calc(100dvh - 80px)`,
         transform: `translateY(calc(100% - ${peekHeight + translateY}px))`,
       }}
     >
@@ -104,9 +97,8 @@ export function BottomSheet({ children, peekHeight = 280 }: BottomSheetProps) {
 
       {/* コンテンツ */}
       <div
-        className={`px-5 pb-6 ${expanded ? 'overflow-y-auto' : 'overflow-hidden cursor-pointer'}`}
-        style={{ height: 'calc(100% - 40px)' }}
-        onClick={handleContentClick}
+        className={`px-5 pb-6 ${expanded ? 'overflow-y-auto' : 'overflow-hidden'}`}
+        style={{ height: `calc(100dvh - 120px)` }}
       >
         {children}
       </div>

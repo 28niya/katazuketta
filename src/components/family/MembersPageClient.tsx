@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button, BUTTON_VARIANTS } from '@/components/ui/Button';
+import { USER_ROLES } from '@/types';
 import { MemberList } from './MemberList';
 import { InviteCode } from './InviteCode';
 import { AddChildForm } from './AddChildForm';
@@ -31,7 +32,7 @@ type Props = {
 export function MembersPageClient({ family, members: initialMembers, currentUser }: Props) {
   const [members, setMembers] = useState(initialMembers);
   const [showAddChild, setShowAddChild] = useState(false);
-  const isAdmin = currentUser.role === 'ADMIN';
+  const isAdmin = currentUser.role === USER_ROLES.ADMIN;
 
   return (
     <>

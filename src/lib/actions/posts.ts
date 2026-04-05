@@ -3,7 +3,7 @@
 import { db } from '@/lib/db';
 import { posts, expLogs, families, reactions } from '@/lib/db/schema';
 import { eq, and, desc, isNull, sql } from 'drizzle-orm';
-import { EXP_PER_POST, EXP_REASONS } from '@/types';
+import { EXP_PER_POST, EXP_REASONS, USER_ROLES } from '@/types';
 
 export async function createPost(
   familyId: string,
@@ -96,7 +96,7 @@ export async function deletePost(
     .where(and(eq(posts.id, postId), isNull(posts.deletedAt)));
 
   if (!post) throw new Error('投稿が見つかりません');
-  if (post.userId !== userId && userRole !== 'ADMIN') {
+  if (post.userId !== userId && userRole !== USER_ROLES.ADMIN) {
     throw new Error('この投稿を削除する権限がありません');
   }
 

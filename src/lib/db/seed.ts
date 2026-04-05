@@ -1,7 +1,7 @@
 import postgres from 'postgres';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import { families, users, areas, posts, expLogs, reactions } from './schema';
-import { DEFAULT_AREAS, EXP_PER_POST, EXP_REASONS } from '../../types';
+import { DEFAULT_AREAS, EXP_PER_POST, EXP_REASONS, DEV_USERS } from '../../types';
 import { sql } from 'drizzle-orm';
 
 async function seed() {
@@ -17,11 +17,7 @@ async function seed() {
   console.log('Family created:', family.id, family.name);
 
   // ユーザーを作成
-  const usersData = [
-    { familyId: family.id, email: 'mama@example.com', name: 'ママ', role: 'ADMIN', authType: 'OAUTH', avatarColor: '#ed64a6', avatarIcon: 'bxs-heart' },
-    { familyId: family.id, email: 'papa@example.com', name: 'パパ', role: 'MEMBER', authType: 'OAUTH', avatarColor: '#38b2ac', avatarIcon: 'bxs-star' },
-    { familyId: family.id, email: 'ABC123-たろう@child.internal', name: 'たろう', role: 'MEMBER', authType: 'CHILD_PIN', avatarColor: '#f6ad55', avatarIcon: 'bxs-cat' },
-  ];
+  const usersData = DEV_USERS.map((u) => ({ familyId: family.id, ...u }));
 
   const createdUsers = await db.insert(users).values(usersData).returning();
   for (const u of createdUsers) {
