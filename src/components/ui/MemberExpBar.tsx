@@ -22,14 +22,14 @@ export function MemberExpBar({ members, totalExp }: MemberExpBarProps) {
   const sorted = [...members].sort((a, b) => b.exp - a.exp);
 
   return (
-    <div className="w-full flex flex-col gap-2.5 px-2">
+    <div className="w-full flex flex-col gap-3 px-2 mt-2">
       {sorted.map((member) => {
         const percent = totalExp > 0 ? (member.exp / totalExp) * 100 : 0;
         const colorIndex = getColorIndexByAvatarColor(member.avatarColor);
         const color = AREA_COLORS[colorIndex];
 
         return (
-          <div key={member.id} className="flex items-center gap-2.5">
+          <div key={member.id} className="flex items-center gap-4">
             <div
               className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
               style={{ backgroundColor: member.avatarColor ?? '#4a5568' }}

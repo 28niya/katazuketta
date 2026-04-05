@@ -49,10 +49,12 @@ export function LevelGauge({ familyName, level, totalExp, currentThreshold, next
         </svg>
 
         {/* 中央のすりガラスUI */}
-        <div className="absolute inset-0 flex flex-col gap-4 items-center justify-center p-8 bg-white/60 rounded-full scale-[0.82] border border-white/80 backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.04)]">
-          <span className="text-xs font-bold text-sub">{familyName}</span>
-          <div className="text-6xl font-bold leading-none bg-gradient-to-br from-[#4facfe] to-[#ed64a6] bg-clip-text [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
-            Lv.{level}
+        <div className="absolute inset-0 flex flex-col gap-6 items-center justify-center p-8 bg-white/60 rounded-full scale-[0.82] border border-white/80 backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.04)]">
+          <div className="flex flex-col gap-1 items-center">
+            <div className="text-xl font-bold text-sub text-center">{familyName}のおうち</div>
+            <div className="text-6xl font-bold leading-none bg-gradient-to-br from-[#4facfe] to-[#ed64a6] bg-clip-text [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
+              Lv.{level}
+            </div>
           </div>
           <div className="flex flex-col items-center">
             <span className="text-xs text-sub">次のレベルまで</span>
