@@ -185,7 +185,7 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
           <div className="flex items-center justify-center py-2">
             <div
               className="w-16 h-16 rounded-full flex items-center justify-center"
-              style={{ backgroundColor: AVATAR_COLOR_VALUES[selectedColorIndex] }}
+              style={{ background: AREA_COLORS[selectedColorIndex].css }}
             >
               <AvatarIcon iconName={selectedIcon} size={32} className="text-white" />
             </div>

@@ -59,8 +59,9 @@ export const AREA_ICON_NAMES = [
   // 追加用 (ユーザーが新規エリア作成時に選べる)
   'microwave', 'chef-hat',
   'droplet',
-  'hanger', 'shirt', 'wash-machine', 'ironing',
+  'hanger', 'shirt', 'wash-machine', 'ironing', 'wash',
   'vacuum', 'spray', 'trash', 'bucket', 'books',
+  'window', 'stairs',
 ] as const;
 export type AreaIconName = typeof AREA_ICON_NAMES[number];
 
@@ -100,6 +101,11 @@ export const AVATAR_COLOR_VALUES = AREA_COLORS.map((c) => c.css.match(/#[0-9a-f]
 const avatarColorToIndex = new Map(AVATAR_COLOR_VALUES.map((c, i) => [c, i]));
 export function getColorIndexByAvatarColor(avatarColor: string | null): number {
   return avatarColorToIndex.get(avatarColor ?? '') ?? 0;
+}
+
+// アバター円の背景グラデーション (DB保存単色 → AREA_COLORS の CSS グラデ)
+export function getAvatarGradient(avatarColor: string | null): string {
+  return AREA_COLORS[getColorIndexByAvatarColor(avatarColor)].css;
 }
 
 // --- 開発用シードユーザー ---

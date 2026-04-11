@@ -33,7 +33,7 @@ export function MemberExpBar({ members, totalExp }: MemberExpBarProps) {
           <div key={member.id} className="flex items-center gap-4">
             <div
               className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
-              style={{ backgroundColor: member.avatarColor ?? '#4a5568' }}
+              style={{ background: color.css }}
             >
               <AvatarIcon iconName={member.avatarIcon} size={14} stroke={2.5} className="text-white" />
             </div>

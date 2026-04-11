@@ -13,6 +13,7 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { Button, BUTTON_VARIANTS } from '@/components/ui/Button';
 import { AvatarIcon } from '@/components/ui/AvatarIcon';
 import { GradientIcon } from '@/components/ui/AreaIcon';
+import { getAvatarGradient } from '@/types';
 
 type Family = {
   id: string;
@@ -41,7 +42,7 @@ export function FamilyPageClient({ family, currentUser }: Props) {
       <div className="flex flex-col items-center gap-3 pt-2">
         <div
           className="w-20 h-20 rounded-full flex items-center justify-center"
-          style={{ backgroundColor: currentUser.avatarColor ?? '#4a5568' }}
+          style={{ background: getAvatarGradient(currentUser.avatarColor) }}
         >
           <AvatarIcon iconName={currentUser.avatarIcon} size={40} stroke={1.75} className="text-white" />
         </div>

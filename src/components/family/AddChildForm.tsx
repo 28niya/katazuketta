@@ -142,7 +142,7 @@ export function AddChildForm({ familyId, inviteCode, onAdded, onCancel }: Props)
       <div className="flex items-center justify-center gap-3 py-2">
         <div
           className="w-12 h-12 rounded-full flex items-center justify-center"
-          style={{ backgroundColor: AVATAR_COLOR_VALUES[selectedColorIndex] }}
+          style={{ background: AREA_COLORS[selectedColorIndex].css }}
         >
           <AvatarIcon iconName={selectedIcon} size={24} className="text-white" />
         </div>

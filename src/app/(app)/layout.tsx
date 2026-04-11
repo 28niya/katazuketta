@@ -4,6 +4,7 @@ import { GradientIcon } from '@/components/ui/AreaIcon';
 import { AvatarIcon } from '@/components/ui/AvatarIcon';
 import { getUser } from '@/lib/actions/family';
 import { requireAuth } from '@/lib/auth/session';
+import { getAvatarGradient } from '@/types';
 
 export default async function AppLayout({
   children,
@@ -21,7 +22,7 @@ export default async function AppLayout({
           <GradientIcon icon={IconHomeSpark} gradientId="brand-gradient" size={32} stroke={1.75} />
           かたづけッタ
         </Link>
-        <Link href="/family" className="w-9 h-9 flex items-center justify-center rounded-full" style={{ backgroundColor: user.avatarColor ?? '#4a5568' }}>
+        <Link href="/family" className="w-9 h-9 flex items-center justify-center rounded-full" style={{ background: getAvatarGradient(user.avatarColor) }}>
           <AvatarIcon iconName={user.avatarIcon} size={20} className="text-white" />
         </Link>
       </header>

@@ -7,7 +7,7 @@ import { AreaIcon } from '@/components/ui/AreaIcon';
 import { AvatarIcon } from '@/components/ui/AvatarIcon';
 import { toggleReaction } from '@/lib/actions/posts';
 import { formatRelativeTime } from '@/lib/time';
-import { AREA_COLORS } from '@/types';
+import { AREA_COLORS, getAvatarGradient } from '@/types';
 
 type PostCardProps = {
   post: {
@@ -59,7 +59,7 @@ export function PostCard({
       <div className="flex items-center gap-3 mb-3">
         <div
           className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-sm"
-          style={{ backgroundColor: avatarColor }}
+          style={{ background: getAvatarGradient(avatarColor) }}
         >
           <AvatarIcon iconName={avatarIcon} size={20} className="text-white" />
         </div>

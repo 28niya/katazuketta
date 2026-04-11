@@ -41,12 +41,15 @@ import {
   IconWashMachine,
   IconWashDryShade,
   IconIroning,
+  IconWash,
   // cleaning / storage
   IconVacuumCleaner,
   IconSpray,
   IconTrash,
   IconBucket,
   IconBooks,
+  IconWindow,
+  IconStairs,
   // ui
   type Icon as TablerIcon,
 } from '@tabler/icons-react';
@@ -99,11 +102,14 @@ const AREA_ICON_REGISTRY: ReadonlyArray<IconEntry<AreaIconName>> = [
   { name: 'wash-machine', label: '洗濯機', Icon: IconWashMachine },
   { name: 'wash-dry-shade', label: '物干し', Icon: IconWashDryShade },
   { name: 'ironing', label: 'アイロン', Icon: IconIroning },
+  { name: 'wash', label: '洗う', Icon: IconWash },
   { name: 'vacuum', label: '掃除機', Icon: IconVacuumCleaner },
   { name: 'spray', label: 'スプレー', Icon: IconSpray },
   { name: 'trash', label: 'ゴミ箱', Icon: IconTrash },
   { name: 'bucket', label: 'バケツ', Icon: IconBucket },
   { name: 'books', label: '本', Icon: IconBooks },
+  { name: 'window', label: '窓', Icon: IconWindow },
+  { name: 'stairs', label: '階段', Icon: IconStairs },
 ];
 
 // ユーザーが新規エリア作成時に選べるアイコン一覧 (プリセットで使うものは除外)
