@@ -5,6 +5,7 @@ import { db } from '@/lib/db';
 import { families, users, expLogs, posts } from '@/lib/db/schema';
 import { eq, and, sql } from 'drizzle-orm';
 import { calculateLevel, progressToNextLevel, expThresholdForLevel } from '@/lib/exp';
+import { initializeDefaultAreas } from '@/lib/actions/areas';
 import { USER_ROLES, AUTH_TYPES } from '@/types';
 export async function getFamilyWithLevel(familyId: string) {
   const family = await db.query.families.findFirst({
@@ -132,6 +133,7 @@ export async function onboardCreateFamily(
       avatarColor,
     })
     .returning();
+  await initializeDefaultAreas(family.id);
   return { family, user };
 }
 

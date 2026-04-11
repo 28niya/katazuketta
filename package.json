@@ -12,7 +12,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "db:seed": "tsx src/lib/db/seed.ts"
+    "db:seed": "tsx src/lib/db/seed.ts",
+    "db:backfill-areas": "tsx --env-file=.env.local src/lib/db/backfill-default-areas.ts"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.11.1",
