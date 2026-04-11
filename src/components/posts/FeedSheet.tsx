@@ -15,6 +15,7 @@ import {
 import { PostCard } from './PostCard';
 import { Button, BUTTON_VARIANTS } from '@/components/ui/Button';
 import { AreaIcon, GradientIcon } from '@/components/ui/AreaIcon';
+import { useBottomSheet } from '@/components/ui/BottomSheet';
 import { createPost } from '@/lib/actions/posts';
 import { createArea, deleteArea } from '@/lib/actions/areas';
 import { AREA_COLORS } from '@/types';
@@ -96,15 +97,20 @@ export function FeedSheet({
     () => false,
   );
   const router = useRouter();
+  const bottomSheet = useBottomSheet();
 
   const switchToForm = useCallback(() => {
+    // 先に slide でフォームに切り替えて、slide 完了後に sheet を expand する。
     setView(VIEW.SLIDING_OUT);
     setTimeout(() => {
       setShowForm(true);
       setView(VIEW.SLIDING_IN);
-      setTimeout(() => setView(VIEW.FORM), 250);
+      setTimeout(() => {
+        setView(VIEW.FORM);
+        bottomSheet?.expand();
+      }, 250);
     }, 250);
-  }, []);
+  }, [bottomSheet]);
 
   const switchToFeed = useCallback(() => {
     setView(VIEW.SLIDING_OUT);

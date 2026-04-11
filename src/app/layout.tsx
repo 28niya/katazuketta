@@ -4,7 +4,7 @@ import { SvgGradientDefs } from '@/components/ui/SvgGradientDefs';
 
 export const metadata: Metadata = {
   title: 'かたづけッタ',
-  description: '家族で「掃除・片付け」を共有すると、おうちがさりげなく育っていくアプリ',
+  description: '家族間で「掃除・片付け」を報告して、おうちを育てるアプリ',
 };
 
 export const viewport: Viewport = {

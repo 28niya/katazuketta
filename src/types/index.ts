@@ -38,24 +38,35 @@ export const LEVEL_DIVISOR = 40;
 // 実体の Tabler コンポーネントは src/lib/icons.tsx でマッピング
 
 export const AVATAR_ICON_NAMES = [
-  'user', 'cat', 'dog', 'star', 'heart', 'sun', 'moon', 'leaf', 'diamond', 'crown',
+  // 動物
+  'cat', 'dog', 'paw', 'fish',
+  // 乗り物
+  'car', 'car-crane', 'rocket', 'ambulance',
+  // ゲーム
+  'device-gamepad2', 'balloon',
+  // フード
+  'apple', 'cherry', 'ice-cream-2', 'bubble-tea',
+  // キャラ
+  'robot', 'ghost', 'ufo',
+  // 宇宙
+  'moon', 'planet', 'flare',
 ] as const;
 export type AvatarIconName = typeof AVATAR_ICON_NAMES[number];
 
 export const AREA_ICON_NAMES = [
   // プリセット (DEFAULT_AREAS で使用、ユーザー選択肢からは除外)
-  'blender', 'sofa', 'bath', 'wash-dry-shade', 'toilet-paper', 'door',
+  'blender', 'armchair', 'bath', 'wash-dry-shade', 'toilet-paper', 'door',
   // 追加用 (ユーザーが新規エリア作成時に選べる)
-  'fridge', 'microwave', 'chef-hat',
-  'droplet', 'home', 'bed', 'armchair',
-  'hanger', 'shirt', 'wash-machine',
+  'microwave', 'chef-hat',
+  'droplet',
+  'hanger', 'shirt', 'wash-machine', 'ironing',
   'vacuum', 'spray', 'trash', 'bucket', 'books',
 ] as const;
 export type AreaIconName = typeof AREA_ICON_NAMES[number];
 
 // DEFAULT_AREAS で使用するアイコン名 (AREA_ICONS 選択肢から除外される)
 export const DEFAULT_AREA_ICON_NAMES: ReadonlySet<AreaIconName> = new Set([
-  'blender', 'sofa', 'bath', 'wash-dry-shade', 'toilet-paper', 'door',
+  'blender', 'armchair', 'bath', 'wash-dry-shade', 'toilet-paper', 'door',
 ]);
 
 // --- エリア カラーパレット（作成順にローテーション） ---
@@ -94,8 +105,8 @@ export function getColorIndexByAvatarColor(avatarColor: string | null): number {
 // --- 開発用シードユーザー ---
 
 export const DEV_USERS = [
-  { email: 'mama@example.com', name: 'ママ', role: USER_ROLES.ADMIN, authType: AUTH_TYPES.OAUTH, avatarColor: AVATAR_COLOR_VALUES[4], avatarIcon: 'heart' satisfies AvatarIconName },
-  { email: 'papa@example.com', name: 'パパ', role: USER_ROLES.MEMBER, authType: AUTH_TYPES.OAUTH, avatarColor: AVATAR_COLOR_VALUES[0], avatarIcon: 'star' satisfies AvatarIconName },
+  { email: 'mama@example.com', name: 'ママ', role: USER_ROLES.ADMIN, authType: AUTH_TYPES.OAUTH, avatarColor: AVATAR_COLOR_VALUES[4], avatarIcon: 'cherry' satisfies AvatarIconName },
+  { email: 'papa@example.com', name: 'パパ', role: USER_ROLES.MEMBER, authType: AUTH_TYPES.OAUTH, avatarColor: AVATAR_COLOR_VALUES[0], avatarIcon: 'car' satisfies AvatarIconName },
   { email: 'ABC123-たろう@child.internal', name: 'たろう', role: USER_ROLES.MEMBER, authType: AUTH_TYPES.CHILD_PIN, avatarColor: AVATAR_COLOR_VALUES[3], avatarIcon: 'cat' satisfies AvatarIconName },
 ];
 
@@ -103,7 +114,7 @@ export const DEV_USERS = [
 
 export const DEFAULT_AREAS: ReadonlyArray<{ name: string; iconName: AreaIconName; colorIndex: number }> = [
   { name: 'キッチン', iconName: 'blender', colorIndex: 0 },
-  { name: 'リビング', iconName: 'sofa', colorIndex: 1 },
+  { name: 'リビング', iconName: 'armchair', colorIndex: 1 },
   { name: 'お風呂', iconName: 'bath', colorIndex: 2 },
   { name: '洗面所', iconName: 'wash-dry-shade', colorIndex: 3 },
   { name: 'トイレ', iconName: 'toilet-paper', colorIndex: 4 },

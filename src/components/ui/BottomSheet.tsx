@@ -1,6 +1,14 @@
 'use client';
 
-import { useRef, useEffect, useCallback, useState } from 'react';
+import { createContext, useContext, useRef, useEffect, useCallback, useState } from 'react';
+
+type BottomSheetContextValue = { expand: () => void; isExpanded: boolean };
+const BottomSheetContext = createContext<BottomSheetContextValue | null>(null);
+
+// PC では BottomSheet に包まれていないため null を返す。呼び出し側は ?. で無視する。
+export function useBottomSheet() {
+  return useContext(BottomSheetContext);
+}
 
 type BottomSheetProps = {
   children: React.ReactNode;
@@ -75,7 +83,13 @@ export function BottomSheet({ children, peekHeight = 280 }: BottomSheetProps) {
     }
   };
 
+  const expand = useCallback(() => {
+    setTranslateY(sheetMaxTranslate);
+    setExpanded(true);
+  }, [sheetMaxTranslate]);
+
   return (
+    <BottomSheetContext.Provider value={{ expand, isExpanded: expanded }}>
     <div
       ref={sheetRef}
       className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-glass backdrop-blur-glass border-t border-glass-border shadow-glass rounded-t-3xl transition-transform duration-300 ease-out"
@@ -103,5 +117,6 @@ export function BottomSheet({ children, peekHeight = 280 }: BottomSheetProps) {
         {children}
       </div>
     </div>
+    </BottomSheetContext.Provider>
   );
 }
