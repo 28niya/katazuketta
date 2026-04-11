@@ -3,11 +3,12 @@
 import { useState } from 'react';
 import {
   IconChevronLeft,
+  IconDeviceMobileCode,
   IconHomePlus,
-  IconUsersGroup,
 } from '@tabler/icons-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button, BUTTON_VARIANTS } from '@/components/ui/Button';
+import { GradientIcon } from '@/components/ui/AreaIcon';
 import { AvatarIcon } from '@/components/ui/AvatarIcon';
 import { ColorPicker } from '@/components/ui/ColorPicker';
 import { IconPicker } from '@/components/ui/IconPicker';
@@ -79,7 +80,7 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
               onClick={() => setStep(ONBOARDING_STEP.CREATE)}
               className="w-full justify-center"
             >
-              <IconHomePlus size={18} stroke={2} />
+              <GradientIcon icon={IconHomePlus} gradientId="brand-gradient" size={18} stroke={2} />
               家族をつくる
             </Button>
 
@@ -94,7 +95,7 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
               onClick={() => setStep(ONBOARDING_STEP.JOIN)}
               className="w-full justify-center"
             >
-              <IconUsersGroup size={18} stroke={2} />
+              <IconDeviceMobileCode size={18} stroke={2} />
               招待コードで参加
             </Button>
           </div>
@@ -158,7 +159,7 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
               onClick={() => goToProfile(step as FlowType)}
               className="self-center"
             >
-              つぎへ
+              次へ
             </Button>
           </div>
         </GlassCard>

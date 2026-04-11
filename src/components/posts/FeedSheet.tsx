@@ -4,13 +4,13 @@ import { useState, useTransition, useCallback, useSyncExternalStore } from 'reac
 import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import {
+  IconBubble,
   IconCheck,
   IconChevronLeft,
   IconMinus,
   IconPencil,
   IconPlus,
   IconSend2,
-  IconSpray,
 } from '@tabler/icons-react';
 import { PostCard } from './PostCard';
 import { Button, BUTTON_VARIANTS } from '@/components/ui/Button';
@@ -177,7 +177,7 @@ export function FeedSheet({
 
             {posts.length === 0 ? (
               <div className="flex flex-col items-center py-8">
-                <GradientIcon icon={IconSpray} gradientId="brand-gradient" size={56} stroke={1.5} className="mb-3" />
+                <GradientIcon icon={IconBubble} gradientId="brand-gradient" size={56} stroke={1.5} className="mb-3" />
                 <p className="text-sm font-bold">まだ投稿がありません</p>
                 <p className="text-xs text-sub mt-1">最初の投稿をしてみよう!</p>
               </div>

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button, BUTTON_VARIANTS } from '@/components/ui/Button';
+import { GradientIcon } from '@/components/ui/AreaIcon';
 import { IconPlus } from '@tabler/icons-react';
 import { USER_ROLES } from '@/types';
 import { MemberList } from './MemberList';
@@ -63,7 +64,7 @@ export function MembersPageClient({ family, members: initialMembers, currentUser
             onClick={() => setShowAddChild(true)}
             className="self-center"
           >
-            <IconPlus size={18} stroke={2.5} />
+            <GradientIcon icon={IconPlus} gradientId="brand-gradient" size={18} stroke={2.5} />
             子どもアカウントを追加
           </Button>
         )
