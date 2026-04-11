@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { IconCheck, IconCopy } from '@tabler/icons-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button, BUTTON_VARIANTS } from '@/components/ui/Button';
 
@@ -27,7 +28,7 @@ export function InviteCode({ code }: Props) {
           </span>
         </div>
         <Button variant={BUTTON_VARIANTS.GLASS} onClick={handleCopy} className="text-xs">
-          <i className={`bx ${copied ? 'bx-check' : 'bx-copy'} text-base`} />
+          {copied ? <IconCheck size={16} stroke={2} /> : <IconCopy size={16} stroke={2} />}
           {copied ? 'コピー済み' : 'コピー'}
         </Button>
       </div>

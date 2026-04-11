@@ -57,7 +57,7 @@ export async function PostList({ posts, currentUserId }: PostListProps) {
             area={area ? { name: area.name, iconName: area.iconName, colorIndex: area.colorIndex } : null}
             userName={user?.name ?? '不明'}
             avatarColor={user?.avatarColor ?? '#38b2ac'}
-            avatarIcon={user?.avatarIcon ?? 'bxs-user'}
+            avatarIcon={user?.avatarIcon ?? 'user'}
             reactionCount={reaction?.count ?? 0}
             hasReacted={reaction?.hasReacted ?? false}
             currentUserId={currentUserId}

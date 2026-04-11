@@ -2,8 +2,17 @@
 
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
+import {
+  IconChevronRight,
+  IconHome,
+  IconLogout,
+  IconUserCircle,
+  IconUsersGroup,
+} from '@tabler/icons-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button, BUTTON_VARIANTS } from '@/components/ui/Button';
+import { AvatarIcon } from '@/components/ui/AvatarIcon';
+import { GradientIcon } from '@/components/ui/AreaIcon';
 
 type Family = {
   id: string;
@@ -34,7 +43,7 @@ export function FamilyPageClient({ family, currentUser }: Props) {
           className="w-20 h-20 rounded-full flex items-center justify-center"
           style={{ backgroundColor: currentUser.avatarColor ?? '#4a5568' }}
         >
-          <i className={`bx ${currentUser.avatarIcon} text-4xl text-white`} />
+          <AvatarIcon iconName={currentUser.avatarIcon} size={40} stroke={1.75} className="text-white" />
         </div>
         <div className="text-center">
           <p className="text-xl font-bold">{currentUser.name}</p>
@@ -48,9 +57,9 @@ export function FamilyPageClient({ family, currentUser }: Props) {
           href="/home"
           className="flex items-center gap-4 px-6 py-4 transition-colors hover:bg-white/20"
         >
-          <i className="bx bxs-home-smile text-xl gradient-icon bg-gradient-to-br from-[#ff9a9e] to-[#fecfef]" />
+          <GradientIcon icon={IconHome} colorIndex={4} size={22} />
           <span className="flex-1 text-sm font-bold">ホーム</span>
-          <i className="bx bx-chevron-right text-xl text-sub" />
+          <IconChevronRight size={20} className="text-sub" stroke={2} />
         </Link>
 
         <div className="h-px bg-white/30 mx-6" />
@@ -59,9 +68,9 @@ export function FamilyPageClient({ family, currentUser }: Props) {
           href="/family/profile"
           className="flex items-center gap-4 px-6 py-4 transition-colors hover:bg-white/20"
         >
-          <i className="bx bxs-user-circle text-xl gradient-icon bg-gradient-to-br from-[#4facfe] to-[#00f2fe]" />
+          <GradientIcon icon={IconUserCircle} colorIndex={0} size={22} />
           <span className="flex-1 text-sm font-bold">プロフィール編集</span>
-          <i className="bx bx-chevron-right text-xl text-sub" />
+          <IconChevronRight size={20} className="text-sub" stroke={2} />
         </Link>
 
         <div className="h-px bg-white/30 mx-6" />
@@ -70,9 +79,9 @@ export function FamilyPageClient({ family, currentUser }: Props) {
           href="/family/members"
           className="flex items-center gap-4 px-6 py-4 transition-colors hover:bg-white/20"
         >
-          <i className="bx bxs-group text-xl gradient-icon bg-gradient-to-br from-[#43e97b] to-[#38f9d7]" />
+          <GradientIcon icon={IconUsersGroup} colorIndex={1} size={22} />
           <span className="flex-1 text-sm font-bold">ファミリー</span>
-          <i className="bx bx-chevron-right text-xl text-sub" />
+          <IconChevronRight size={20} className="text-sub" stroke={2} />
         </Link>
 
       </GlassCard>
@@ -82,7 +91,7 @@ export function FamilyPageClient({ family, currentUser }: Props) {
         className="self-center text-sm"
         onClick={() => signOut({ callbackUrl: '/auth/login' })}
       >
-        <i className="bx bx-log-out text-base" />
+        <IconLogout size={16} stroke={2} />
         ログアウト
       </Button>
     </div>

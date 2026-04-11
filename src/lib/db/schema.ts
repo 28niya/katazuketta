@@ -25,7 +25,7 @@ export const users = pgTable('users', {
   email: varchar('email', { length: 255 }).notNull().unique(),
   name: varchar('name', { length: 50 }).notNull(),
   avatarColor: varchar('avatar_color', { length: 7 }),
-  avatarIcon: varchar('avatar_icon', { length: 50 }).notNull().default('bxs-user'),
+  avatarIcon: varchar('avatar_icon', { length: 50 }).notNull().default('user'),
   role: varchar('role', { length: 10 }).notNull().default('MEMBER'),
   authType: varchar('auth_type', { length: 20 }).notNull().default('OAUTH'),
   pinHash: varchar('pin_hash', { length: 255 }),

@@ -53,7 +53,7 @@ async function seed() {
     { userId: taro.id, areaName: 'リビング', memo: 'そうじきかけた!', hoursAgo: 5 },
     { userId: mama.id, areaName: 'トイレ', memo: null, hoursAgo: 8 },
     { userId: papa.id, areaName: '玄関', memo: 'くつ並べた', hoursAgo: 24 },
-    { userId: taro.id, areaName: '寝室', memo: 'ふとんたたんだ!', hoursAgo: 26 },
+    { userId: taro.id, areaName: '洗面所', memo: '歯ブラシ立て洗ったよ!', hoursAgo: 26 },
   ];
 
   let totalExp = 0;

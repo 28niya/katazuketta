@@ -1,4 +1,7 @@
 import Link from 'next/link';
+import { IconHomeSpark } from '@tabler/icons-react';
+import { GradientIcon } from '@/components/ui/AreaIcon';
+import { AvatarIcon } from '@/components/ui/AvatarIcon';
 import { getUser } from '@/lib/actions/family';
 import { requireAuth } from '@/lib/auth/session';
 
@@ -15,11 +18,11 @@ export default async function AppLayout({
       {/* ヘッダー */}
       <header className="bg-glass backdrop-blur-glass border border-glass-border shadow-glass flex items-center justify-between px-6 py-4">
         <Link href="/home" className="flex items-center gap-2 text-2xl font-bold">
-          <i className="bx bxs-spray-can text-3xl gradient-icon bg-gradient-to-br from-[#6ee7b7] to-[#f472b6]" />
+          <GradientIcon icon={IconHomeSpark} gradientId="brand-gradient" size={32} stroke={1.75} />
           かたづけッタ
         </Link>
         <Link href="/family" className="w-9 h-9 flex items-center justify-center rounded-full" style={{ backgroundColor: user.avatarColor ?? '#4a5568' }}>
-          <i className={`bx ${user.avatarIcon} text-lg text-white`} />
+          <AvatarIcon iconName={user.avatarIcon} size={20} className="text-white" />
         </Link>
       </header>
 

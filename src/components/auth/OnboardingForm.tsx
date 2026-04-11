@@ -1,9 +1,18 @@
 'use client';
 
 import { useState } from 'react';
+import {
+  IconCheck,
+  IconChevronLeft,
+  IconHomePlus,
+  IconUsersGroup,
+} from '@tabler/icons-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button, BUTTON_VARIANTS } from '@/components/ui/Button';
-import { AVATAR_ICONS, AREA_COLORS, AVATAR_COLOR_VALUES } from '@/types';
+import { AvatarIcon } from '@/components/ui/AvatarIcon';
+import { GradientIcon } from '@/components/ui/AreaIcon';
+import { AREA_COLORS, AVATAR_COLOR_VALUES } from '@/types';
+import { AVATAR_ICONS } from '@/lib/icons';
 import { onboardCreateFamily, onboardJoinFamily } from '@/lib/actions/family';
 
 const ONBOARDING_STEP = {
@@ -70,7 +79,7 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
               onClick={() => setStep(ONBOARDING_STEP.CREATE)}
               className="w-full justify-center"
             >
-              <i className="bx bxs-home-heart text-lg" />
+              <IconHomePlus size={18} stroke={2} />
               家族をつくる
             </Button>
 
@@ -85,7 +94,7 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
               onClick={() => setStep(ONBOARDING_STEP.JOIN)}
               className="w-full justify-center"
             >
-              <i className="bx bxs-group text-lg" />
+              <IconUsersGroup size={18} stroke={2} />
               招待コードで参加
             </Button>
           </div>
@@ -104,7 +113,7 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
               onClick={() => { setStep(ONBOARDING_STEP.SELECT); setError(''); }}
               className="flex items-center gap-1 text-sm text-sub hover:opacity-70 transition-opacity self-start"
             >
-              <i className="bx bx-chevron-left text-xl" />
+              <IconChevronLeft size={20} stroke={2} />
               戻る
             </button>
 
@@ -158,8 +167,6 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
   }
 
   // ステップ3: プロフィール設定
-  const selectedColor = AREA_COLORS[selectedColorIndex];
-
   return (
     <div className="w-full max-w-sm flex flex-col gap-4">
       <GlassCard>
@@ -168,7 +175,7 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
             onClick={() => { setStep(flowType); setError(''); }}
             className="flex items-center gap-1 text-sm text-sub hover:opacity-70 transition-opacity self-start"
           >
-            <i className="bx bx-chevron-left text-xl" />
+            <IconChevronLeft size={20} stroke={2} />
             戻る
           </button>
 
@@ -180,7 +187,7 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
               className="w-16 h-16 rounded-full flex items-center justify-center"
               style={{ backgroundColor: AVATAR_COLOR_VALUES[selectedColorIndex] }}
             >
-              <i className={`bx ${selectedIcon} text-3xl text-white`} />
+              <AvatarIcon iconName={selectedIcon} size={32} className="text-white" />
             </div>
           </div>
 
@@ -215,8 +222,10 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
                       boxShadow: isColorSelected ? '0 4px 12px rgba(0,0,0,0.15)' : 'none',
                     }}
                   >
-                    <i
-                      className="bx bx-check text-xl text-white transition-all"
+                    <IconCheck
+                      size={20}
+                      stroke={3}
+                      className="text-white transition-all"
                       style={{
                         opacity: isColorSelected ? 1 : 0,
                         transform: isColorSelected ? 'scale(1)' : 'scale(0.5)',
@@ -234,6 +243,7 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
             <p className="text-xs font-bold text-sub mb-2 pl-1">アイコンを選ぶ</p>
             <div className="grid grid-cols-5 gap-2">
               {AVATAR_ICONS.map((icon) => {
+                const Icon = icon.Icon;
                 const isIconSelected = selectedIcon === icon.name;
                 return (
                   <button
@@ -246,7 +256,11 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
                         : 'border border-transparent hover:bg-white/40'
                     }`}
                   >
-                    <i className={`bx ${icon.name} text-2xl ${isIconSelected ? `gradient-icon bg-gradient-to-br ${selectedColor.gradient}` : 'text-sub opacity-70'}`} />
+                    {isIconSelected ? (
+                      <GradientIcon icon={Icon} colorIndex={selectedColorIndex} size={24} />
+                    ) : (
+                      <Icon size={24} stroke={1.75} className="text-sub opacity-70" />
+                    )}
                   </button>
                 );
               })}

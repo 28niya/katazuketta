@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { SvgGradientDefs } from '@/components/ui/SvgGradientDefs';
 
 export const metadata: Metadata = {
   title: 'かたづけッタ',
@@ -27,12 +28,11 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&display=swap"
           rel="stylesheet"
         />
-        <link
-          href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-          rel="stylesheet"
-        />
       </head>
-      <body>{children}</body>
+      <body>
+        <SvgGradientDefs />
+        {children}
+      </body>
     </html>
   );
 }

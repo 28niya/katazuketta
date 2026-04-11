@@ -6,8 +6,8 @@ export async function proxy(request: NextRequest) {
   const session = await auth();
   const { pathname } = request.nextUrl;
 
-  // 認証不要パス
-  const publicPaths = ['/auth', '/api/auth'];
+  // 認証不要パス (/dev は IS_DEV ガードで本番では notFound)
+  const publicPaths = ['/auth', '/api/auth', '/dev'];
   if (publicPaths.some((p) => pathname.startsWith(p))) {
     return NextResponse.next();
   }

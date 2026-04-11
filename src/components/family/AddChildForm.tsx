@@ -1,8 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { IconCheck } from '@tabler/icons-react';
 import { Button, BUTTON_VARIANTS } from '@/components/ui/Button';
-import { AVATAR_ICONS, AREA_COLORS, AVATAR_COLOR_VALUES } from '@/types';
+import { AvatarIcon } from '@/components/ui/AvatarIcon';
+import { GradientIcon } from '@/components/ui/AreaIcon';
+import { AREA_COLORS, AVATAR_COLOR_VALUES } from '@/types';
+import { AVATAR_ICONS } from '@/lib/icons';
 import { createChildAccount } from '@/lib/actions/family';
 
 type User = {
@@ -89,8 +93,10 @@ export function AddChildForm({ familyId, inviteCode, onAdded, onCancel }: Props)
                   boxShadow: isColorSelected ? '0 4px 12px rgba(0,0,0,0.15)' : 'none',
                 }}
               >
-                <i
-                  className="bx bx-check text-xl text-white transition-all"
+                <IconCheck
+                  size={20}
+                  stroke={3}
+                  className="text-white transition-all"
                   style={{
                     opacity: isColorSelected ? 1 : 0,
                     transform: isColorSelected ? 'scale(1)' : 'scale(0.5)',
@@ -108,8 +114,8 @@ export function AddChildForm({ familyId, inviteCode, onAdded, onCancel }: Props)
         <p className="text-xs font-bold text-sub mb-2 pl-1">アイコンを選ぶ</p>
         <div className="grid grid-cols-5 gap-2">
           {AVATAR_ICONS.map((icon) => {
+            const Icon = icon.Icon;
             const isIconSelected = selectedIcon === icon.name;
-            const selectedColor = AREA_COLORS[selectedColorIndex];
             return (
               <button
                 key={icon.name}
@@ -121,7 +127,11 @@ export function AddChildForm({ familyId, inviteCode, onAdded, onCancel }: Props)
                     : 'border border-transparent hover:bg-white/40'
                 }`}
               >
-                <i className={`bx ${icon.name} text-2xl ${isIconSelected ? `gradient-icon bg-gradient-to-br ${selectedColor.gradient}` : 'text-sub opacity-70'}`} />
+                {isIconSelected ? (
+                  <GradientIcon icon={Icon} colorIndex={selectedColorIndex} size={24} />
+                ) : (
+                  <Icon size={24} stroke={1.75} className="text-sub opacity-70" />
+                )}
               </button>
             );
           })}
@@ -134,7 +144,7 @@ export function AddChildForm({ familyId, inviteCode, onAdded, onCancel }: Props)
           className="w-12 h-12 rounded-full flex items-center justify-center"
           style={{ backgroundColor: AVATAR_COLOR_VALUES[selectedColorIndex] }}
         >
-          <i className={`bx ${selectedIcon} text-xl text-white`} />
+          <AvatarIcon iconName={selectedIcon} size={24} className="text-white" />
         </div>
         <span className="font-bold">{nickname || 'ニックネーム'}</span>
       </div>

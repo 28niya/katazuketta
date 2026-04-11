@@ -1,7 +1,10 @@
 'use client';
 
 import { useState, useTransition } from 'react';
+import { IconHeart, IconHeartFilled } from '@tabler/icons-react';
 import { Button, BUTTON_VARIANTS } from '@/components/ui/Button';
+import { AreaIcon } from '@/components/ui/AreaIcon';
+import { AvatarIcon } from '@/components/ui/AvatarIcon';
 import { toggleReaction } from '@/lib/actions/posts';
 import { formatRelativeTime } from '@/lib/time';
 import { AREA_COLORS } from '@/types';
@@ -58,7 +61,7 @@ export function PostCard({
           className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-sm"
           style={{ backgroundColor: avatarColor }}
         >
-          <i className={`bx ${avatarIcon} text-lg`} />
+          <AvatarIcon iconName={avatarIcon} size={20} className="text-white" />
         </div>
         <div>
           <span className="font-bold text-sm">{userName}</span>
@@ -72,8 +75,12 @@ export function PostCard({
         style={{ backgroundColor: areaColor.bg }}
       >
         {area && (
-          <i
-            className={`bx ${area.iconName} text-6xl gradient-icon bg-gradient-to-br ${areaColor.gradient} mb-3`}
+          <AreaIcon
+            iconName={area.iconName}
+            colorIndex={area.colorIndex}
+            size={64}
+            stroke={1.5}
+            className="mb-3"
           />
         )}
         <p className="text-center font-bold text-base leading-relaxed">
@@ -88,7 +95,11 @@ export function PostCard({
         disabled={isPending}
         className="text-sm"
       >
-        <i className={`bx ${liked ? 'bxs-heart' : 'bx-heart'} text-lg ${liked ? 'like-icon-active' : ''}`} />
+        {liked ? (
+          <IconHeartFilled size={18} className="like-icon-active" />
+        ) : (
+          <IconHeart size={18} stroke={2} />
+        )}
         たすかる
       </Button>
     </div>

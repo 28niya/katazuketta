@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
+import { IconBabyCarriage, IconChevronLeft } from '@tabler/icons-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { DEV_USERS, IS_DEV } from '@/types';
 import { Button, BUTTON_VARIANTS } from '@/components/ui/Button';
@@ -94,7 +95,7 @@ export function LoginForm() {
               onClick={() => setMode(LOGIN_MODE.CHILD)}
               className="w-full justify-center"
             >
-              <i className="bx bxs-baby-carriage text-lg" />
+              <IconBabyCarriage size={18} stroke={2} />
               子どもアカウントでログイン
             </Button>
 
@@ -133,7 +134,7 @@ export function LoginForm() {
             onClick={() => { setMode(LOGIN_MODE.SELECT); setError(''); }}
             className="flex items-center gap-1 text-sm text-sub hover:opacity-70 transition-opacity self-start"
           >
-            <i className="bx bx-chevron-left text-xl" />
+            <IconChevronLeft size={20} stroke={2} />
             戻る
           </button>
 

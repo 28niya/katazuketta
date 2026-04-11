@@ -1,4 +1,5 @@
 import { USER_ROLES, AUTH_TYPES } from '@/types';
+import { AvatarIcon } from '@/components/ui/AvatarIcon';
 
 type Member = {
   id: string;
@@ -23,7 +24,7 @@ export function MemberList({ members, currentUserId }: Props) {
             className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
             style={{ backgroundColor: member.avatarColor ?? '#4a5568' }}
           >
-            <i className={`bx ${member.avatarIcon} text-lg text-white`} />
+            <AvatarIcon iconName={member.avatarIcon} size={20} className="text-white" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">

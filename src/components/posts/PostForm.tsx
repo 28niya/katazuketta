@@ -2,10 +2,11 @@
 
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
+import { IconPlus } from '@tabler/icons-react';
 import { createPost } from '@/lib/actions/posts';
 import { createArea } from '@/lib/actions/areas';
-import { AreaIcon } from '@/components/ui/AreaIcon';
-import { AREA_ICONS } from '@/types';
+import { AreaIcon, GradientIcon } from '@/components/ui/AreaIcon';
+import { AREA_ICONS } from '@/lib/icons';
 
 type Area = {
   id: string;
@@ -68,7 +69,7 @@ export function PostForm({ familyId, userId, areas }: PostFormProps) {
                   : 'border border-transparent hover:bg-white/30'
                 }`}
             >
-              <AreaIcon iconName={area.iconName} colorIndex={area.colorIndex} size="text-2xl" />
+              <AreaIcon iconName={area.iconName} colorIndex={area.colorIndex} size={28} />
               <span className="text-[11px]">{area.name}</span>
             </button>
           );
@@ -77,7 +78,7 @@ export function PostForm({ familyId, userId, areas }: PostFormProps) {
           onClick={() => setIsAdding(true)}
           className="flex-shrink-0 flex flex-col items-center gap-1.5 px-3 py-2 rounded-2xl border border-dashed border-sub/30 hover:bg-white/30 transition-all"
         >
-          <i className="bx bx-plus text-2xl text-sub" />
+          <IconPlus size={28} className="text-sub" stroke={2} />
           <span className="text-[11px] text-sub">追加</span>
         </button>
       </div>
@@ -94,17 +95,25 @@ export function PostForm({ familyId, userId, areas }: PostFormProps) {
             autoFocus
           />
           <div className="flex gap-2 overflow-x-auto">
-            {AREA_ICONS.map((icon) => (
-              <button
-                key={icon.name}
-                onClick={() => setNewAreaIcon(icon.name)}
-                className={`p-2 rounded-xl transition-all ${
-                  newAreaIcon === icon.name ? 'bg-white/60 shadow-sm' : 'hover:bg-white/30'
-                }`}
-              >
-                <i className={`bx ${icon.name} text-xl text-sub`} />
-              </button>
-            ))}
+            {AREA_ICONS.map((icon) => {
+              const Icon = icon.Icon;
+              const isSelected = newAreaIcon === icon.name;
+              return (
+                <button
+                  key={icon.name}
+                  onClick={() => setNewAreaIcon(icon.name)}
+                  className={`p-2 rounded-xl transition-all ${
+                    isSelected ? 'bg-white/60 shadow-sm' : 'hover:bg-white/30'
+                  }`}
+                >
+                  {isSelected ? (
+                    <GradientIcon icon={Icon} colorIndex={0} size={22} />
+                  ) : (
+                    <Icon size={22} stroke={1.75} className="text-sub" />
+                  )}
+                </button>
+              );
+            })}
           </div>
           <div className="flex gap-2 justify-end">
             <button

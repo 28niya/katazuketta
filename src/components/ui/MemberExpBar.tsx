@@ -1,6 +1,7 @@
 'use client';
 
 import { AREA_COLORS, getColorIndexByAvatarColor } from '@/types';
+import { AvatarIcon } from '@/components/ui/AvatarIcon';
 
 type MemberStat = {
   id: string;
@@ -34,7 +35,7 @@ export function MemberExpBar({ members, totalExp }: MemberExpBarProps) {
               className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
               style={{ backgroundColor: member.avatarColor ?? '#4a5568' }}
             >
-              <i className={`bx ${member.avatarIcon} text-sm text-white`} />
+              <AvatarIcon iconName={member.avatarIcon} size={14} stroke={2.5} className="text-white" />
             </div>
             <div className="flex-grow flex flex-col gap-0.5">
               <div className="flex justify-between text-[10px] font-bold text-sub">

@@ -2,10 +2,17 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import {
+  IconHome,
+  IconHomeSpark,
+  IconUsersGroup,
+  type Icon as TablerIcon,
+} from '@tabler/icons-react';
+import { GradientIcon } from '@/components/ui/AreaIcon';
 
-const NAV_ITEMS = [
-  { href: '/home', icon: 'bxs-home-smile', label: 'おうち' },
-  { href: '/family', icon: 'bxs-group', label: 'かぞく' },
+const NAV_ITEMS: { href: string; Icon: TablerIcon; label: string }[] = [
+  { href: '/home', Icon: IconHome, label: 'おうち' },
+  { href: '/family', Icon: IconUsersGroup, label: 'かぞく' },
 ];
 
 export function Navigation() {
@@ -18,6 +25,7 @@ export function Navigation() {
         <div className="bg-glass backdrop-blur-glass border border-glass-border shadow-glass flex rounded-full p-2">
           {NAV_ITEMS.map((item) => {
             const isActive = pathname.startsWith(item.href);
+            const Icon = item.Icon;
             return (
               <Link
                 key={item.href}
@@ -28,7 +36,7 @@ export function Navigation() {
                     : 'text-sub'
                   }`}
               >
-                <i className={`bx ${item.icon} text-lg ${isActive ? 'text-green-accent' : ''}`} />
+                <Icon size={18} stroke={2} className={isActive ? 'text-green-accent' : ''} />
                 {item.label}
               </Link>
             );
@@ -40,12 +48,13 @@ export function Navigation() {
       <nav className="hidden md:block bg-glass backdrop-blur-glass border border-glass-border shadow-glass sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-6 flex items-center justify-between h-16">
           <div className="flex items-center gap-2 text-xl font-bold">
-            <i className="bx bxs-spray-can text-2xl gradient-icon bg-gradient-to-br from-[#6ee7b7] to-[#f472b6]" />
+            <GradientIcon icon={IconHomeSpark} gradientId="brand-gradient" size={26} stroke={1.75} />
             かたづけッタ
           </div>
           <div className="flex gap-1">
             {NAV_ITEMS.map((item) => {
               const isActive = pathname.startsWith(item.href);
+              const Icon = item.Icon;
               return (
                 <Link
                   key={item.href}
@@ -56,7 +65,7 @@ export function Navigation() {
                       : 'text-sub hover:bg-white/30'
                     }`}
                 >
-                  <i className={`bx ${item.icon} text-lg ${isActive ? 'text-green-accent' : ''}`} />
+                  <Icon size={18} stroke={2} className={isActive ? 'text-green-accent' : ''} />
                   {item.label}
                 </Link>
               );

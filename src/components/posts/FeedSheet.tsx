@@ -1,14 +1,24 @@
 'use client';
 
-import { useState, useTransition, useCallback, useEffect } from 'react';
+import { useState, useTransition, useCallback, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
+import {
+  IconCheck,
+  IconChevronLeft,
+  IconMinus,
+  IconPencil,
+  IconPlus,
+  IconSend2,
+  IconSpray,
+} from '@tabler/icons-react';
 import { PostCard } from './PostCard';
 import { Button, BUTTON_VARIANTS } from '@/components/ui/Button';
-import { AreaIcon } from '@/components/ui/AreaIcon';
+import { AreaIcon, GradientIcon } from '@/components/ui/AreaIcon';
 import { createPost } from '@/lib/actions/posts';
 import { createArea, deleteArea } from '@/lib/actions/areas';
-import { AREA_ICONS, AREA_COLORS } from '@/types';
+import { AREA_COLORS } from '@/types';
+import { AREA_ICONS } from '@/lib/icons';
 
 type Area = {
   id: string;
@@ -80,10 +90,12 @@ export function FeedSheet({
   const [newAreaColorIndex, setNewAreaColorIndex] = useState(0);
   const [isEditingAreas, setIsEditingAreas] = useState(false);
   const [addError, setAddError] = useState('');
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
   const router = useRouter();
-
-  useEffect(() => setMounted(true), []);
 
   const switchToForm = useCallback(() => {
     setView(VIEW.SLIDING_OUT);
@@ -156,8 +168,8 @@ export function FeedSheet({
             <h2 className="text-sm font-bold opacity-80" style={{ filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.8))', textShadow: '0 4px 12px rgba(31, 38, 135, 0.1)' }}>みんなの活動</h2>
 
             {posts.length === 0 ? (
-              <div className="text-center py-8">
-                <i className="bx bxs-spray-can text-5xl gradient-icon bg-gradient-to-br from-[#4facfe] to-[#38b2ac] mb-3" />
+              <div className="flex flex-col items-center py-8">
+                <GradientIcon icon={IconSpray} gradientId="brand-gradient" size={56} stroke={1.5} className="mb-3" />
                 <p className="text-sm font-bold">まだ投稿がありません</p>
                 <p className="text-xs text-sub mt-1">最初の投稿をしてみよう!</p>
               </div>
@@ -174,7 +186,7 @@ export function FeedSheet({
                       area={area ? { name: area.name, iconName: area.iconName, colorIndex: area.colorIndex } : null}
                       userName={user?.name ?? '不明'}
                       avatarColor={user?.avatarColor ?? '#38b2ac'}
-                      avatarIcon={user?.avatarIcon ?? 'bxs-user'}
+                      avatarIcon={user?.avatarIcon ?? 'user'}
                       reactionCount={reaction?.count ?? 0}
                       hasReacted={reaction?.hasReacted ?? false}
                       currentUserId={currentUserId}
@@ -193,7 +205,7 @@ export function FeedSheet({
                 onClick={switchToFeed}
                 className="flex items-center gap-1 text-sm text-sub hover:opacity-70 transition-opacity"
               >
-                <i className="bx bx-chevron-left text-xl" />
+                <IconChevronLeft size={20} stroke={2} />
                 戻る
               </button>
             </div>
@@ -224,9 +236,11 @@ export function FeedSheet({
                           borderColor: 'transparent',
                         }}
                       >
-                        <i
-                          className={`bx ${area.iconName} text-2xl gradient-icon bg-gradient-to-br ${areaColor.gradient}`}
-                          style={isSelected && !isEditingAreas ? { opacity: 1, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.05))' } : { opacity: 0.8 }}
+                        <AreaIcon
+                          iconName={area.iconName}
+                          colorIndex={area.colorIndex}
+                          size={26}
+                          className={isSelected && !isEditingAreas ? '' : 'opacity-80'}
                         />
                         <span className="text-xs">{area.name}</span>
                       </button>
@@ -237,7 +251,7 @@ export function FeedSheet({
                           onClick={(e) => { e.stopPropagation(); handleDeleteArea(area.id); }}
                           className="absolute -top-1.5 -right-1.5 w-[22px] h-[22px] rounded-full bg-white/90 text-sub shadow-[0_2px_8px_rgba(0,0,0,0.05)] border border-white flex items-center justify-center z-10 cursor-pointer active:bg-sub active:text-white transition-colors"
                         >
-                          <i className="bx bx-minus text-base font-bold" />
+                          <IconMinus size={14} stroke={3} />
                         </button>
                       )}
                     </div>
@@ -255,7 +269,7 @@ export function FeedSheet({
                     }}
                     className="flex flex-col items-center justify-center gap-2 py-4 rounded-[24px] bg-white/40 border border-white/60 shadow-sm hover:bg-white/60 transition-all"
                   >
-                    <i className="bx bx-plus text-2xl opacity-80" />
+                    <IconPlus size={26} stroke={2} className="opacity-80" />
                     <span className="text-xs font-bold">追加</span>
                   </button>
                 )}
@@ -291,8 +305,10 @@ export function FeedSheet({
                               boxShadow: isColorSelected ? '0 4px 12px rgba(0,0,0,0.15)' : 'none',
                             }}
                           >
-                            <i
-                              className="bx bx-check text-xl text-white transition-all"
+                            <IconCheck
+                              size={20}
+                              stroke={3}
+                              className="text-white transition-all"
                               style={{
                                 opacity: isColorSelected ? 1 : 0,
                                 transform: isColorSelected ? 'scale(1)' : 'scale(0.5)',
@@ -311,8 +327,8 @@ export function FeedSheet({
                         const usedIcons = new Set(areas.map(a => a.iconName));
                         const availableIcons = AREA_ICONS.filter(icon => !usedIcons.has(icon.name));
                         return (availableIcons.length > 0 ? availableIcons : AREA_ICONS).map((icon) => {
+                          const Icon = icon.Icon;
                           const isIconSelected = newAreaIcon === icon.name;
-                          const selectedColor = AREA_COLORS[newAreaColorIndex];
                           return (
                             <button
                               key={icon.name}
@@ -323,7 +339,11 @@ export function FeedSheet({
                                   : 'border border-transparent hover:bg-white/40'
                               }`}
                             >
-                              <i className={`bx ${icon.name} text-2xl ${isIconSelected ? `gradient-icon bg-gradient-to-br ${selectedColor.gradient}` : 'text-sub opacity-70'}`} />
+                              {isIconSelected ? (
+                                <GradientIcon icon={Icon} colorIndex={newAreaColorIndex} size={24} />
+                              ) : (
+                                <Icon size={24} stroke={1.75} className="text-sub opacity-70" />
+                              )}
                             </button>
                           );
                         });
@@ -357,7 +377,11 @@ export function FeedSheet({
                       : 'flex-col py-4 bg-white/20 border-transparent hover:bg-white/30'
                   }`}
                 >
-                  <i className={`bx ${isEditingAreas ? 'bx-check' : 'bx-pencil'} ${isEditingAreas ? 'text-xl text-sub' : 'text-2xl text-sub/50'}`} />
+                  {isEditingAreas ? (
+                    <IconCheck size={20} stroke={2.5} className="text-sub" />
+                  ) : (
+                    <IconPencil size={26} stroke={1.75} className="text-sub/50" />
+                  )}
                   <span className={isEditingAreas ? 'text-xs font-bold text-sub' : 'text-xs text-sub/50'}>{isEditingAreas ? '完了' : '場所を編集'}</span>
                 </button>
               </div>
@@ -396,8 +420,9 @@ export function FeedSheet({
                       }}
                     >
                       {isPending ? '送信中...' : '投稿'}
-                      <i
-                        className="bx bxs-paper-plane text-xl"
+                      <IconSend2
+                        size={20}
+                        stroke={2}
                         style={{
                           color: color.activeText,
                           filter: `drop-shadow(0 2px 4px ${color.activeShadow})`,
