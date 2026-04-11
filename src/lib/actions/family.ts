@@ -1,5 +1,6 @@
 'use server';
 
+import bcrypt from 'bcryptjs';
 import { db } from '@/lib/db';
 import { families, users, expLogs, posts } from '@/lib/db/schema';
 import { eq, and, sql } from 'drizzle-orm';
@@ -92,13 +93,7 @@ export async function createChildAccount(
   // ダミーメール生成
   const email = `${inviteCode}-${nickname.trim()}@child.internal`;
 
-  // PIN のハッシュ化（MVP では簡易ハッシュ、本番では bcrypt 等に置換）
-  const encoder = new TextEncoder();
-  const data = encoder.encode(pin);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const pinHash = Array.from(new Uint8Array(hashBuffer))
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
+  const pinHash = await bcrypt.hash(pin, 10);
 
   const [child] = await db
     .insert(users)

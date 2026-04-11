@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
+import bcrypt from 'bcryptjs';
 import { db } from '@/lib/db';
 import { users, accounts } from '@/lib/db/schema';
 import { eq, and } from 'drizzle-orm';
@@ -42,15 +43,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           throw new Error('しばらく待ってからやり直してください');
         }
 
-        // PINハッシュ検証
-        const encoder = new TextEncoder();
-        const data = encoder.encode(pin);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        const pinHash = Array.from(new Uint8Array(hashBuffer))
-          .map((b) => b.toString(16).padStart(2, '0'))
-          .join('');
+        const isValid = await bcrypt.compare(pin, user.pinHash);
 
-        if (pinHash !== user.pinHash) {
+        if (!isValid) {
           // 失敗カウント更新
           const newFailCount = user.pinFailCount + 1;
           const updates: Record<string, unknown> = { pinFailCount: newFailCount };
