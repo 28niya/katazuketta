@@ -15,6 +15,8 @@ import {
 import { PostCard } from './PostCard';
 import { Button, BUTTON_VARIANTS } from '@/components/ui/Button';
 import { AreaIcon, GradientIcon } from '@/components/ui/AreaIcon';
+import { ColorPicker } from '@/components/ui/ColorPicker';
+import { IconPicker } from '@/components/ui/IconPicker';
 import { useBottomSheet } from '@/components/ui/BottomSheet';
 import { createPost } from '@/lib/actions/posts';
 import { createArea, deleteArea } from '@/lib/actions/areas';
@@ -294,65 +296,27 @@ export function FeedSheet({
                       autoFocus
                     />
 
-                    {/* カラー選択（スクエア＋チェック） */}
+                    {/* カラー選択 */}
                     <p className="text-xs font-bold text-sub mb-2 pl-1">カラーを選ぶ</p>
-                    <div className="flex gap-3 mb-4 pl-1">
-                      {AREA_COLORS.map((color, i) => {
-                        const isColorSelected = newAreaColorIndex === i;
-                        return (
-                          <button
-                            key={i}
-                            onClick={() => setNewAreaColorIndex(i)}
-                            className="flex items-center justify-center w-9 h-9 rounded-xl transition-all"
-                            style={{
-                              background: color.css,
-                              opacity: isColorSelected ? 1 : 0.6,
-                              transform: isColorSelected ? 'scale(1.1)' : 'scale(0.9)',
-                              boxShadow: isColorSelected ? '0 4px 12px rgba(0,0,0,0.15)' : 'none',
-                            }}
-                          >
-                            <IconCheck
-                              size={20}
-                              stroke={3}
-                              className="text-white transition-all"
-                              style={{
-                                opacity: isColorSelected ? 1 : 0,
-                                transform: isColorSelected ? 'scale(1)' : 'scale(0.5)',
-                                filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.2))',
-                              }}
-                            />
-                          </button>
-                        );
-                      })}
+                    <div className="mb-4">
+                      <ColorPicker value={newAreaColorIndex} onChange={setNewAreaColorIndex} />
                     </div>
 
                     {/* アイコン選択（使用済みを除外） */}
                     <p className="text-xs font-bold text-sub mb-2 pl-1">アイコンを選ぶ</p>
-                    <div className="grid grid-cols-5 gap-2 mb-4">
+                    <div className="mb-4">
                       {(() => {
                         const usedIcons = new Set(areas.map(a => a.iconName));
                         const availableIcons = AREA_ICONS.filter(icon => !usedIcons.has(icon.name));
-                        return (availableIcons.length > 0 ? availableIcons : AREA_ICONS).map((icon) => {
-                          const Icon = icon.Icon;
-                          const isIconSelected = newAreaIcon === icon.name;
-                          return (
-                            <button
-                              key={icon.name}
-                              onClick={() => setNewAreaIcon(icon.name)}
-                              className={`p-3 rounded-[20px] transition-all ${
-                                isIconSelected
-                                  ? 'bg-white/80 shadow-sm border border-white'
-                                  : 'border border-transparent hover:bg-white/40'
-                              }`}
-                            >
-                              {isIconSelected ? (
-                                <GradientIcon icon={Icon} colorIndex={newAreaColorIndex} size={24} />
-                              ) : (
-                                <Icon size={24} stroke={1.75} className="text-sub opacity-70" />
-                              )}
-                            </button>
-                          );
-                        });
+                        const iconsToShow = availableIcons.length > 0 ? availableIcons : AREA_ICONS;
+                        return (
+                          <IconPicker
+                            icons={iconsToShow}
+                            value={newAreaIcon}
+                            onChange={setNewAreaIcon}
+                            colorIndex={newAreaColorIndex}
+                          />
+                        );
                       })()}
                     </div>
 

@@ -27,7 +27,7 @@ const VARIANT_STYLES: Record<ButtonVariant, string> = {
 };
 
 const PRIMARY_GRADIENT_TEXT =
-  'bg-gradient-to-br from-[#4facfe] to-[#ed64a6] bg-clip-text [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]';
+  'inline-flex items-center gap-1.5 whitespace-nowrap bg-gradient-to-br from-[#4facfe] to-[#ed64a6] bg-clip-text [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]';
 
 type ButtonProps = {
   variant?: ButtonVariant;

@@ -2,11 +2,11 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { IconCheck } from '@tabler/icons-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button, BUTTON_VARIANTS } from '@/components/ui/Button';
 import { AvatarIcon } from '@/components/ui/AvatarIcon';
-import { GradientIcon } from '@/components/ui/AreaIcon';
+import { ColorPicker } from '@/components/ui/ColorPicker';
+import { IconPicker } from '@/components/ui/IconPicker';
 import { AREA_COLORS, AVATAR_COLOR_VALUES } from '@/types';
 import { AVATAR_ICONS } from '@/lib/icons';
 import { updateProfile } from '@/lib/actions/family';
@@ -73,65 +73,18 @@ export function ProfileForm({ user }: Props) {
         {/* カラーを選ぶ */}
         <div>
           <p className="text-xs font-bold text-sub mb-2 pl-1">カラーを選ぶ</p>
-          <div className="flex gap-3 pl-1">
-            {AREA_COLORS.map((color, i) => {
-              const isColorSelected = selectedColorIndex === i;
-              return (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => setSelectedColorIndex(i)}
-                  className="flex items-center justify-center w-9 h-9 rounded-xl transition-all"
-                  style={{
-                    background: color.css,
-                    opacity: isColorSelected ? 1 : 0.6,
-                    transform: isColorSelected ? 'scale(1.1)' : 'scale(0.9)',
-                    boxShadow: isColorSelected ? '0 4px 12px rgba(0,0,0,0.15)' : 'none',
-                  }}
-                >
-                  <IconCheck
-                    size={20}
-                    stroke={3}
-                    className="text-white transition-all"
-                    style={{
-                      opacity: isColorSelected ? 1 : 0,
-                      transform: isColorSelected ? 'scale(1)' : 'scale(0.5)',
-                      filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.2))',
-                    }}
-                  />
-                </button>
-              );
-            })}
-          </div>
+          <ColorPicker value={selectedColorIndex} onChange={setSelectedColorIndex} />
         </div>
 
         {/* アイコンを選ぶ */}
         <div>
           <p className="text-xs font-bold text-sub mb-2 pl-1">アイコンを選ぶ</p>
-          <div className="grid grid-cols-5 gap-2">
-            {AVATAR_ICONS.map((icon) => {
-              const Icon = icon.Icon;
-              const isIconSelected = selectedIcon === icon.name;
-              return (
-                <button
-                  key={icon.name}
-                  type="button"
-                  onClick={() => setSelectedIcon(icon.name)}
-                  className={`p-3 rounded-[20px] transition-all ${
-                    isIconSelected
-                      ? 'bg-white/80 shadow-sm border border-white'
-                      : 'border border-transparent hover:bg-white/40'
-                  }`}
-                >
-                  {isIconSelected ? (
-                    <GradientIcon icon={Icon} colorIndex={selectedColorIndex} size={24} />
-                  ) : (
-                    <Icon size={24} stroke={1.75} className="text-sub opacity-70" />
-                  )}
-                </button>
-              );
-            })}
-          </div>
+          <IconPicker
+            icons={AVATAR_ICONS}
+            value={selectedIcon}
+            onChange={setSelectedIcon}
+            colorIndex={selectedColorIndex}
+          />
         </div>
 
         {/* エラー */}
