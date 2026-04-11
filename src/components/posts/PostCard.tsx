@@ -7,7 +7,7 @@ import { AreaIcon } from '@/components/ui/AreaIcon';
 import { AvatarIcon } from '@/components/ui/AvatarIcon';
 import { toggleReaction } from '@/lib/actions/posts';
 import { formatRelativeTime } from '@/lib/time';
-import { AREA_COLORS, getAvatarGradient } from '@/types';
+import { AREA_COLORS, getAvatarGradient, getComplementaryColorIndex } from '@/types';
 
 type PostCardProps = {
   post: {
@@ -51,7 +51,7 @@ export function PostCard({
   };
 
   const colorIndex = area?.colorIndex ?? 0;
-  const areaColor = AREA_COLORS[colorIndex % AREA_COLORS.length];
+  const complementColor = AREA_COLORS[getComplementaryColorIndex(colorIndex)];
 
   return (
     <div className="bg-glass backdrop-blur-glass border border-glass-border rounded-3xl p-5">
@@ -72,7 +72,7 @@ export function PostCard({
       {/* ビジュアル */}
       <div
         className="rounded-2xl flex flex-col items-center justify-center py-8 px-6 mb-3"
-        style={{ backgroundColor: areaColor.bg }}
+        style={{ backgroundColor: complementColor.bg }}
       >
         {area && (
           <AreaIcon

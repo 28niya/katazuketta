@@ -73,24 +73,24 @@ export const DEFAULT_AREA_ICON_NAMES: ReadonlySet<AreaIconName> = new Set([
 // --- エリア カラーパレット（作成順にローテーション） ---
 
 export const AREA_COLORS = [
-  { gradient: 'from-[#4facfe] to-[#00f2fe]', css: 'linear-gradient(135deg, #4facfe, #00f2fe)', bg: '#dff0fe',
-    gradFrom: '#4facfe', gradTo: '#00f2fe',
-    activeBg: 'linear-gradient(to bottom right, rgba(79,172,254,0.15), rgba(0,242,254,0.15))', activeBorder: 'rgba(0,242,254,0.4)', activeShadow: 'rgba(0,242,254,0.2)', activeText: '#00f2fe' },     // 青
-  { gradient: 'from-[#43e97b] to-[#38f9d7]', css: 'linear-gradient(135deg, #43e97b, #38f9d7)', bg: '#d6f5e8',
-    gradFrom: '#43e97b', gradTo: '#38f9d7',
-    activeBg: 'linear-gradient(to bottom right, rgba(67,233,123,0.15), rgba(56,249,215,0.15))', activeBorder: 'rgba(56,249,215,0.4)', activeShadow: 'rgba(56,249,215,0.2)', activeText: '#38b2ac' },     // 緑
-  { gradient: 'from-[#fde047] to-[#facc15]', css: 'linear-gradient(135deg, #fde047, #facc15)', bg: '#fef9c3',
-    gradFrom: '#fde047', gradTo: '#facc15',
-    activeBg: 'linear-gradient(to bottom right, rgba(253,224,71,0.15), rgba(250,204,21,0.15))', activeBorder: 'rgba(250,204,21,0.4)', activeShadow: 'rgba(250,204,21,0.2)', activeText: '#eab308' },     // 黄
-  { gradient: 'from-[#febf59] to-[#f6ad55]', css: 'linear-gradient(135deg, #febf59, #f6ad55)', bg: '#fff3d6',
-    gradFrom: '#febf59', gradTo: '#f6ad55',
-    activeBg: 'linear-gradient(to bottom right, rgba(254,191,89,0.15), rgba(246,173,85,0.15))', activeBorder: 'rgba(246,173,85,0.4)', activeShadow: 'rgba(246,173,85,0.2)', activeText: '#f6ad55' },     // オレンジ
+  { gradient: 'from-[#fa709a] to-[#fee140]', css: 'linear-gradient(135deg, #fa709a, #fee140)', bg: '#ffead5',
+    gradFrom: '#fa709a', gradTo: '#fee140',
+    activeBg: 'linear-gradient(to bottom right, rgba(250,112,154,0.15), rgba(254,225,64,0.15))', activeBorder: 'rgba(250,112,154,0.4)', activeShadow: 'rgba(250,112,154,0.2)', activeText: '#e11d48' },     // サンセット (玄関)
   { gradient: 'from-[#ff9a9e] to-[#fecfef]', css: 'linear-gradient(135deg, #ff9a9e, #fecfef)', bg: '#ffe6eb',
     gradFrom: '#ff9a9e', gradTo: '#fecfef',
-    activeBg: 'linear-gradient(to bottom right, rgba(255,154,158,0.15), rgba(254,207,239,0.15))', activeBorder: 'rgba(255,154,158,0.4)', activeShadow: 'rgba(255,154,158,0.2)', activeText: '#ed64a6' },     // 桃
-  { gradient: 'from-[#a18cd1] to-[#fbc2eb]', css: 'linear-gradient(135deg, #a18cd1, #fbc2eb)', bg: '#ede6f6',
-    gradFrom: '#a18cd1', gradTo: '#fbc2eb',
-    activeBg: 'linear-gradient(to bottom right, rgba(161,140,209,0.15), rgba(251,194,235,0.15))', activeBorder: 'rgba(161,140,209,0.4)', activeShadow: 'rgba(161,140,209,0.2)', activeText: '#a18cd1' },     // ラベンダー
+    activeBg: 'linear-gradient(to bottom right, rgba(255,154,158,0.15), rgba(254,207,239,0.15))', activeBorder: 'rgba(255,154,158,0.4)', activeShadow: 'rgba(255,154,158,0.2)', activeText: '#ed64a6' },     // ピーチ (リビング)
+  { gradient: 'from-[#d9afd9] to-[#97d9e1]', css: 'linear-gradient(135deg, #d9afd9, #97d9e1)', bg: '#eae2ee',
+    gradFrom: '#d9afd9', gradTo: '#97d9e1',
+    activeBg: 'linear-gradient(to bottom right, rgba(217,175,217,0.15), rgba(151,217,225,0.15))', activeBorder: 'rgba(151,217,225,0.4)', activeShadow: 'rgba(151,217,225,0.2)', activeText: '#a78bfa' },     // ミントラベンダー (キッチン)
+  { gradient: 'from-[#209cff] to-[#68e0cf]', css: 'linear-gradient(135deg, #209cff, #68e0cf)', bg: '#d9ecfa',
+    gradFrom: '#209cff', gradTo: '#68e0cf',
+    activeBg: 'linear-gradient(to bottom right, rgba(32,156,255,0.15), rgba(104,224,207,0.15))', activeBorder: 'rgba(32,156,255,0.4)', activeShadow: 'rgba(32,156,255,0.2)', activeText: '#0284c7' },     // マリン (洗面所)
+  { gradient: 'from-[#92fe9d] to-[#00c9ff]', css: 'linear-gradient(135deg, #92fe9d, #00c9ff)', bg: '#d5f7ea',
+    gradFrom: '#92fe9d', gradTo: '#00c9ff',
+    activeBg: 'linear-gradient(to bottom right, rgba(146,254,157,0.15), rgba(0,201,255,0.15))', activeBorder: 'rgba(0,201,255,0.4)', activeShadow: 'rgba(0,201,255,0.2)', activeText: '#06b6d4' },     // ソーダ (お風呂)
+  { gradient: 'from-[#13547a] to-[#80d0c7]', css: 'linear-gradient(135deg, #13547a, #80d0c7)', bg: '#d6eef0',
+    gradFrom: '#13547a', gradTo: '#80d0c7',
+    activeBg: 'linear-gradient(to bottom right, rgba(19,84,122,0.15), rgba(128,208,199,0.15))', activeBorder: 'rgba(19,84,122,0.4)', activeShadow: 'rgba(19,84,122,0.2)', activeText: '#13547a' },     // オーシャン (トイレ)
 ] as const;
 
 // --- アバターカラー（AREA_COLORSの先頭カラー = DBに保存する単色値） ---
@@ -108,6 +108,12 @@ export function getAvatarGradient(avatarColor: string | null): string {
   return AREA_COLORS[getColorIndexByAvatarColor(avatarColor)].css;
 }
 
+// カラーホイール上の反対色 (6色を円環と見なして対向を取る)
+export function getComplementaryColorIndex(colorIndex: number): number {
+  const n = AREA_COLORS.length;
+  return (colorIndex + Math.floor(n / 2)) % n;
+}
+
 // --- 開発用シードユーザー ---
 
 export const DEV_USERS = [
@@ -119,10 +125,10 @@ export const DEV_USERS = [
 // --- プリセットエリア ---
 
 export const DEFAULT_AREAS: ReadonlyArray<{ name: string; iconName: AreaIconName; colorIndex: number }> = [
-  { name: 'キッチン', iconName: 'blender', colorIndex: 0 },
+  { name: '玄関', iconName: 'door', colorIndex: 0 },
   { name: 'リビング', iconName: 'armchair', colorIndex: 1 },
-  { name: 'お風呂', iconName: 'bath', colorIndex: 2 },
+  { name: 'キッチン', iconName: 'blender', colorIndex: 2 },
   { name: '洗面所', iconName: 'wash-dry-shade', colorIndex: 3 },
-  { name: 'トイレ', iconName: 'toilet-paper', colorIndex: 4 },
-  { name: '玄関', iconName: 'door', colorIndex: 5 },
+  { name: 'お風呂', iconName: 'bath', colorIndex: 4 },
+  { name: 'トイレ', iconName: 'toilet-paper', colorIndex: 5 },
 ];
