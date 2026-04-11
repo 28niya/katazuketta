@@ -1,10 +1,15 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { SvgGradientDefs } from '@/components/ui/SvgGradientDefs';
 
 export const metadata: Metadata = {
   title: 'かたづけッタ',
   description: '家族で「掃除・片付け」を共有すると、おうちがさりげなく育っていくアプリ',
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({
