@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { signOut } from 'next-auth/react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button, BUTTON_VARIANTS } from '@/components/ui/Button';
 
@@ -76,8 +77,11 @@ export function FamilyPageClient({ family, currentUser }: Props) {
 
       </GlassCard>
 
-      {/* ログアウト（将来用） */}
-      <Button variant={BUTTON_VARIANTS.GLASS} className="self-center text-sm">
+      <Button
+        variant={BUTTON_VARIANTS.GLASS}
+        className="self-center text-sm"
+        onClick={() => signOut({ callbackUrl: '/auth/login' })}
+      >
         <i className="bx bx-log-out text-base" />
         ログアウト
       </Button>

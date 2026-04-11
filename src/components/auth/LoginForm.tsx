@@ -72,7 +72,7 @@ export function LoginForm() {
           <div className="flex flex-col gap-4">
             <button
               onClick={handleGoogleLogin}
-              className="flex items-center justify-center gap-3 w-full py-3 bg-white/80 border border-white/90 rounded-2xl font-bold text-sm transition-all hover:bg-white active:scale-95"
+              className="flex items-center justify-center gap-3 w-full py-3 bg-white/80 border border-white/90 rounded-full font-bold text-sm transition-all hover:bg-white active:scale-95"
             >
               <svg viewBox="0 0 24 24" width="20" height="20">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
@@ -111,7 +111,7 @@ export function LoginForm() {
                       key={u.email}
                       onClick={() => handleDevLogin(u.email)}
                       disabled={submitting}
-                      className="w-full py-2 bg-yellow-100/80 border border-yellow-300/80 rounded-2xl text-xs font-mono transition-all hover:bg-yellow-200/80 active:scale-95 disabled:opacity-40"
+                      className="w-full py-2 bg-yellow-100/80 border border-yellow-300/80 rounded-full text-xs font-mono transition-all hover:bg-yellow-200/80 active:scale-95 disabled:opacity-40"
                     >
                       {u.name} ({u.email})
                     </button>
