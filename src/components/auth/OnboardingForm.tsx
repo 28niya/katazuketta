@@ -131,7 +131,7 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
                   onChange={(e) => setFamilyName(e.target.value)}
                   placeholder="かわいけ"
                   maxLength={100}
-                  className="w-full bg-white/50 border border-white/80 rounded-2xl px-4 py-3 text-sm focus:bg-white/70 transition-colors outline-none"
+                  className="w-full bg-white/50 border border-white/80 rounded-2xl px-4 py-3 text-base focus:bg-white/70 transition-colors outline-none"
                 />
               </div>
             )}
@@ -145,7 +145,7 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
                   onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
                   placeholder="ABC123"
                   maxLength={6}
-                  className="w-full bg-white/50 border border-white/80 rounded-2xl px-4 py-3 text-sm focus:bg-white/70 transition-colors outline-none tracking-[0.2em] text-center font-bold"
+                  className="w-full bg-white/50 border border-white/80 rounded-2xl px-4 py-3 text-base focus:bg-white/70 transition-colors outline-none tracking-[0.2em] text-center font-bold"
                 />
               </div>
             )}
@@ -200,7 +200,7 @@ export function OnboardingForm({ email, name: initialName }: { email: string; na
               onChange={(e) => setUserName(e.target.value)}
               placeholder="名前"
               maxLength={50}
-              className="w-full bg-white/50 border border-white/80 rounded-2xl px-4 py-3 text-sm focus:bg-white/70 transition-colors outline-none"
+              className="w-full bg-white/50 border border-white/80 rounded-2xl px-4 py-3 text-base focus:bg-white/70 transition-colors outline-none"
             />
           </div>
 

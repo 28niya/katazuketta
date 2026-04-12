@@ -292,7 +292,7 @@ export function FeedSheet({
                       onChange={(e) => { setNewAreaName(e.target.value); setAddError(''); }}
                       placeholder="場所の名前（例: 子供部屋）"
                       maxLength={50}
-                      className="w-full bg-white/60 border border-white/80 focus:bg-white/90 transition-all rounded-[16px] px-4 py-3 text-sm outline-none placeholder:text-sub/60 mb-4"
+                      className="w-full bg-white/60 border border-white/80 focus:bg-white/90 transition-all rounded-[16px] px-4 py-3 text-base outline-none placeholder:text-sub/60 mb-4"
                       autoFocus
                     />
 
@@ -370,7 +370,7 @@ export function FeedSheet({
                     placeholder="なくてもOK"
                     rows={4}
                     maxLength={200}
-                    className="w-full bg-white/50 border border-white/80 focus:bg-white/70 transition-all rounded-[28px] px-6 py-5 text-sm outline-none placeholder:text-sub/50 resize-none"
+                    className="w-full bg-white/50 border border-white/80 focus:bg-white/70 transition-all rounded-[28px] px-6 py-5 text-base outline-none placeholder:text-sub/50 resize-none"
                   />
                   <span className="text-xs text-sub mt-1 block text-right">{memo.length}/200</span>
                 </div>

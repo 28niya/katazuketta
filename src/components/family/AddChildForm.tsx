@@ -57,7 +57,7 @@ export function AddChildForm({ familyId, inviteCode, onAdded, onCancel }: Props)
           onChange={(e) => setNickname(e.target.value)}
           placeholder="たろう"
           maxLength={50}
-          className="w-full bg-white/50 border border-white/80 rounded-2xl px-4 py-3 text-sm focus:bg-white/70 transition-colors outline-none"
+          className="w-full bg-white/50 border border-white/80 rounded-2xl px-4 py-3 text-base focus:bg-white/70 transition-colors outline-none"
         />
       </div>
 
@@ -70,7 +70,7 @@ export function AddChildForm({ familyId, inviteCode, onAdded, onCancel }: Props)
           value={pin}
           onChange={(e) => setPin(e.target.value.replace(/\D/g, '').slice(0, 8))}
           placeholder="123456"
-          className="w-full bg-white/50 border border-white/80 rounded-2xl px-4 py-3 text-sm focus:bg-white/70 transition-colors outline-none tracking-[0.3em]"
+          className="w-full bg-white/50 border border-white/80 rounded-2xl px-4 py-3 text-base focus:bg-white/70 transition-colors outline-none tracking-[0.3em]"
         />
       </div>
 
