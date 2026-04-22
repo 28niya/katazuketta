@@ -7,7 +7,7 @@ import {
   IconHome,
   IconLogout,
   IconUserCircle,
-  IconUsersGroup,
+  IconFriends,
 } from '@tabler/icons-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button, BUTTON_VARIANTS } from '@/components/ui/Button';
@@ -80,7 +80,7 @@ export function FamilyPageClient({ family, currentUser }: Props) {
           href="/family/members"
           className="flex items-center gap-4 px-6 py-4 transition-colors hover:bg-white/20"
         >
-          <GradientIcon icon={IconUsersGroup} colorIndex={1} size={22} />
+          <GradientIcon icon={IconFriends} colorIndex={1} size={22} />
           <span className="flex-1 text-sm font-bold">ファミリー</span>
           <IconChevronRight size={20} className="text-sub" stroke={2} />
         </Link>

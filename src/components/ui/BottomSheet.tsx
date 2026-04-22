@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useRef, useEffect, useCallback, useState } from 'react';
 
-type BottomSheetContextValue = { expand: () => void; isExpanded: boolean };
+type BottomSheetContextValue = { expand: () => void; collapse: () => void; isExpanded: boolean };
 const BottomSheetContext = createContext<BottomSheetContextValue | null>(null);
 
 // PC では BottomSheet に包まれていないため null を返す。呼び出し側は ?. で無視する。
@@ -17,6 +17,7 @@ type BottomSheetProps = {
 
 export function BottomSheet({ children, peekHeight = 280 }: BottomSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef({ startY: 0, startTranslate: 0, dragging: false });
   const [translateY, setTranslateY] = useState(0);
   const [expanded, setExpanded] = useState(false);
@@ -88,8 +89,14 @@ export function BottomSheet({ children, peekHeight = 280 }: BottomSheetProps) {
     setExpanded(true);
   }, [sheetMaxTranslate]);
 
+  const collapse = useCallback(() => {
+    setTranslateY(0);
+    setExpanded(false);
+    if (contentRef.current) contentRef.current.scrollTop = 0;
+  }, []);
+
   return (
-    <BottomSheetContext.Provider value={{ expand, isExpanded: expanded }}>
+    <BottomSheetContext.Provider value={{ expand, collapse, isExpanded: expanded }}>
     <div
       ref={sheetRef}
       className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-glass backdrop-blur-glass border-t border-glass-border shadow-glass rounded-t-3xl transition-transform duration-300 ease-out"
@@ -111,8 +118,12 @@ export function BottomSheet({ children, peekHeight = 280 }: BottomSheetProps) {
 
       {/* コンテンツ */}
       <div
-        className={`px-5 pb-6 ${expanded ? 'overflow-y-auto' : 'overflow-hidden'}`}
-        style={{ height: `calc(100dvh - 120px)` }}
+        ref={contentRef}
+        className={`px-5 ${expanded ? 'overflow-y-auto' : 'overflow-hidden'}`}
+        style={{
+          height: `calc(100dvh - 120px)`,
+          paddingBottom: `calc(env(safe-area-inset-bottom, 0px) + 32px)`,
+        }}
       >
         {children}
       </div>

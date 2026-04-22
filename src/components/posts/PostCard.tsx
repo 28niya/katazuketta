@@ -63,10 +63,7 @@ export function PostCard({
         >
           <AvatarIcon iconName={avatarIcon} size={20} className="text-white" />
         </div>
-        <div>
-          <span className="font-bold text-sm">{userName}</span>
-          <span className="text-[11px] text-sub ml-2">{formatRelativeTime(post.createdAt)}</span>
-        </div>
+        <span className="font-bold text-sm">{userName}</span>
       </div>
 
       {/* ビジュアル */}
@@ -88,20 +85,28 @@ export function PostCard({
         </p>
       </div>
 
-      {/* たすかるボタン */}
-      <Button
-        variant={liked ? BUTTON_VARIANTS.LIKE_ACTIVE : BUTTON_VARIANTS.LIKE}
-        onClick={handleButtonClick}
-        disabled={isPending}
-        className="text-sm"
-      >
-        {liked ? (
-          <IconHeartFilled size={18} className="like-icon-active" />
-        ) : (
-          <IconHeart size={18} stroke={2} />
-        )}
-        たすかる
-      </Button>
+      {/* たすかるボタン + 日時 */}
+      <div className="flex justify-between items-start gap-2">
+        <Button
+          variant={liked ? BUTTON_VARIANTS.LIKE_ACTIVE : BUTTON_VARIANTS.LIKE}
+          onClick={handleButtonClick}
+          disabled={isPending}
+          className="text-sm"
+        >
+          {liked ? (
+            <IconHeartFilled size={18} className="like-icon-active" />
+          ) : (
+            <IconHeart size={18} stroke={2} />
+          )}
+          たすかる
+        </Button>
+        <time
+          dateTime={post.createdAt.toISOString()}
+          className="text-[11px] text-sub"
+        >
+          {formatRelativeTime(post.createdAt)}
+        </time>
+      </div>
     </div>
   );
 }

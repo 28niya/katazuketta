@@ -5,14 +5,14 @@ import { usePathname } from 'next/navigation';
 import {
   IconHome,
   IconHomeSpark,
-  IconUsersGroup,
+  IconFriends,
   type Icon as TablerIcon,
 } from '@tabler/icons-react';
 import { GradientIcon } from '@/components/ui/AreaIcon';
 
 const NAV_ITEMS: { href: string; Icon: TablerIcon; label: string }[] = [
   { href: '/home', Icon: IconHome, label: 'おうち' },
-  { href: '/family', Icon: IconUsersGroup, label: 'かぞく' },
+  { href: '/family', Icon: IconFriends, label: 'かぞく' },
 ];
 
 export function Navigation() {

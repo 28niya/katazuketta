@@ -128,13 +128,13 @@ export function FeedSheet({
 
   const handleSubmit = () => {
     if (!selectedAreaId) return;
+    bottomSheet?.collapse();
     startTransition(async () => {
       await createPost(familyId, currentUserId, selectedAreaId, memo || undefined);
       setMemo('');
       setSelectedAreaId(null);
       setShowForm(false);
-      setView(VIEW.SLIDING_IN);
-      setTimeout(() => setView(VIEW.FEED), 250);
+      setView(VIEW.FEED);
       router.refresh();
     });
   };
@@ -173,7 +173,14 @@ export function FeedSheet({
         {!showForm ? (
           /* フィード */
           <div className="flex flex-col gap-4">
-            <h2 className="text-sm font-bold opacity-80" style={{ filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.8))', textShadow: '0 4px 12px rgba(31, 38, 135, 0.1)' }}>みんなの活動</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-sm font-bold opacity-80" style={{ filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.8))', textShadow: '0 4px 12px rgba(31, 38, 135, 0.1)' }}>みんなの活動</h2>
+              {!showFab && (
+                <Button variant={BUTTON_VARIANTS.PRIMARY} onClick={switchToForm} className="hidden md:inline-flex text-sm">
+                  投稿
+                </Button>
+              )}
+            </div>
 
             {posts.length === 0 ? (
               <div className="flex flex-col items-center py-8">
