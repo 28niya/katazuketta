@@ -56,7 +56,7 @@ export default async function HomePage() {
           reactions={feedData.reactions}
           familyId={familyId}
           currentUserId={userId}
-          showFab={false}
+          fabClassName="hidden md:inline-flex"
         />
       </div>
     </div>

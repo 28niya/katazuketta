@@ -59,8 +59,8 @@ type FeedSheetProps = {
   reactions: Record<string, Reaction>;
   familyId: string;
   currentUserId: string;
-  /** FABをportalで表示するか（デフォルトtrue、PC版はfalse） */
-  showFab?: boolean;
+  /** FABの可視性を制御するクラス（モバイル用/PC用で出し分ける） */
+  fabClassName?: string;
 };
 
 const VIEW = {
@@ -80,7 +80,7 @@ export function FeedSheet({
   reactions,
   familyId,
   currentUserId,
-  showFab = true,
+  fabClassName = 'md:hidden',
 }: FeedSheetProps) {
   const [view, setView] = useState<ViewState>(VIEW.FEED);
   const [showForm, setShowForm] = useState(false);
@@ -173,14 +173,7 @@ export function FeedSheet({
         {!showForm ? (
           /* フィード */
           <div className="flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm font-bold opacity-80" style={{ filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.8))', textShadow: '0 4px 12px rgba(31, 38, 135, 0.1)' }}>みんなの活動</h2>
-              {!showFab && (
-                <Button variant={BUTTON_VARIANTS.PRIMARY} onClick={switchToForm} className="hidden md:inline-flex text-sm">
-                  投稿
-                </Button>
-              )}
-            </div>
+            <h2 className="text-sm font-bold opacity-80" style={{ filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.8))', textShadow: '0 4px 12px rgba(31, 38, 135, 0.1)' }}>みんなの活動</h2>
 
             {posts.length === 0 ? (
               <div className="flex flex-col items-center py-8">
@@ -415,8 +408,8 @@ export function FeedSheet({
       </div>
 
       {/* FAB: portalでbodyに配置 */}
-      {showFab && !showForm && mounted && createPortal(
-        <Button variant={BUTTON_VARIANTS.PRIMARY} onClick={switchToForm} className="md:hidden fixed bottom-8 right-6 z-50 text-sm">
+      {!showForm && mounted && createPortal(
+        <Button variant={BUTTON_VARIANTS.PRIMARY} onClick={switchToForm} className={`${fabClassName} fixed bottom-8 right-6 z-50 text-sm`}>
           投稿
         </Button>,
         document.body,
